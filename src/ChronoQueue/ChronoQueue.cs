@@ -75,7 +75,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
     public void Dispose()
     {
-        _count = 0;
+        _queue.Clear();
         _memoryCache.Clear();
         _memoryCache.Dispose();
     }
