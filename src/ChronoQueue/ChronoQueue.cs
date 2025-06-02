@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ChronoQueue;
 
 public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 {
-    private readonly ConcurrentQueue<Guid> _queue = new();
+    private readonly ConcurrentQueue<long> _queue = new();
     private readonly MemoryCache _memoryCache;
     private readonly PostEvictionCallbackRegistration _globalPostEvictionCallback;
     private long _count;
+    private long _idCounter;
 
     public ChronoQueue(MemoryCacheOptions options = null)
     {
@@ -40,7 +38,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
     public void Enqueue(ChronoQueueItem<T> item)
     {
-        var id = Guid.NewGuid();
+        var id = GetNextId();
         _queue.Enqueue(id);
         
         var options = new MemoryCacheEntryOptions
@@ -79,4 +77,6 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         _memoryCache.Clear();
         _memoryCache.Dispose();
     }
+
+    private long GetNextId() => Interlocked.Increment(ref _idCounter);
 }
