@@ -22,7 +22,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         _globalPostEvictionCallback = new PostEvictionCallbackRegistration
         {
-            EvictionCallback = (_, value, reason, _) =>
+            EvictionCallback = (_, _, reason, _) =>
             {
                 if (reason != EvictionReason.Removed)
                 {
