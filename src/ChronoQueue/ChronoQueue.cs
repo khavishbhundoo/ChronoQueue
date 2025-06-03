@@ -22,7 +22,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         _globalPostEvictionCallback = new PostEvictionCallbackRegistration
         {
-            EvictionCallback = (_, _, reason, _) =>
+            EvictionCallback = (_, _, _, _) =>
             {
                 Interlocked.Decrement(ref _count);
             }
@@ -31,14 +31,17 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
     public void Enqueue(ChronoQueueItem<T> item)
     {
+        if(item.ExpiresAt <= DateTimeOffset.UtcNow)
+            return;
+        
         var id = GetNextCacheKey();
-        _queue.Enqueue(id);
         
         var options = new MemoryCacheEntryOptions
         {
             AbsoluteExpiration = item.ExpiresAt
         };
         options.PostEvictionCallbacks.Add(_globalPostEvictionCallback);
+        _queue.Enqueue(id);    
         _memoryCache.Set(id, item, options);
         Interlocked.Increment(ref _count);
     }
@@ -57,17 +60,37 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         }
         return false;
     }
+    
+    public bool TryPeek(out ChronoQueueItem<T> item)
+    {
+        item = default;
+
+        while (_queue.TryPeek(out var id))
+        {
+            if (_memoryCache.TryGetValue(id, out item))
+            {
+                return true;
+            }
+            _memoryCache.Remove(id);
+        }
+        return false;
+    }
 
     public long Count()
     {
         return Interlocked.Read(ref _count);
     }
-
-    public void Dispose()
+    
+    public void Flush()
     {
         _queue.Clear();
         _memoryCache.Clear();
+    }
+
+    public void Dispose()
+    {
         _memoryCache.Dispose();
+        _queue.Clear();
     }
 
     private long GetNextCacheKey() => Interlocked.Increment(ref _idCounter);

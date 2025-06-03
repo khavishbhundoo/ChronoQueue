@@ -5,9 +5,9 @@ namespace ChronoQueue;
 public readonly struct ChronoQueueItem<TInner> 
 {
     public TInner Item { get; }
-    public DateTime ExpiresAt { get; }
+    public DateTimeOffset ExpiresAt { get; }
 
-    public ChronoQueueItem(TInner item, DateTime expiresAt)
+    public ChronoQueueItem(TInner item, DateTimeOffset expiresAt)
     {
         Item = item;
         ExpiresAt = expiresAt;
