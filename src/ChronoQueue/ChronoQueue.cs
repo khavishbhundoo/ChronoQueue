@@ -24,17 +24,14 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         {
             EvictionCallback = (_, _, reason, _) =>
             {
-                if (reason != EvictionReason.Removed)
-                {
-                    Interlocked.Decrement(ref _count);
-                }
+                Interlocked.Decrement(ref _count);
             }
         };
     }
 
     public void Enqueue(ChronoQueueItem<T> item)
     {
-        var id = GetNextId();
+        var id = GetNextCacheKey();
         _queue.Enqueue(id);
         
         var options = new MemoryCacheEntryOptions
@@ -55,7 +52,6 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
             if (_memoryCache.TryGetValue(id, out item))
             {
                 _memoryCache.Remove(id);
-                Interlocked.Decrement(ref _count);
                 return true;
             }
         }
@@ -74,5 +70,5 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         _memoryCache.Dispose();
     }
 
-    private long GetNextId() => Interlocked.Increment(ref _idCounter);
+    private long GetNextCacheKey() => Interlocked.Increment(ref _idCounter);
 }
