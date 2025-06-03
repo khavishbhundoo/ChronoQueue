@@ -1,5 +1,4 @@
 using ChronoQueue;
-using Microsoft.Extensions.Caching.Memory;
 using Shouldly;
 
 namespace ChronoQueueUnitTests;
@@ -20,8 +19,7 @@ public class ChronoQueueTests
         var success = queue.TryDequeue(out var result);
 
         success.ShouldBeTrue();
-        result.Item.ShouldBe("test1");
-        result.ExpiresAt.ShouldBe(expiryTime);
+        result.ShouldBe("test1");
         queue.Count().ShouldBe(0);
     }
     
@@ -38,9 +36,11 @@ public class ChronoQueueTests
 
         var success = queue.TryDequeue(out var result);
         success.ShouldBeFalse();
-        await Task.Delay(50); // Give time for callback to decrement count
+        
+        await Task.Delay(5); // Give time for callback to decrement count
+        
         queue.Count().ShouldBe(0);
-        result.Item.ShouldBeNullOrEmpty();
+        result.ShouldBeNull();
     }
     
     [Fact]
@@ -51,7 +51,7 @@ public class ChronoQueueTests
         var success = queue.TryDequeue(out var result);
 
         success.ShouldBeFalse();
-        result.Item.ShouldBeNullOrEmpty();
+        result.ShouldBeNull();;
         queue.Count().ShouldBe(0);
     }
 }

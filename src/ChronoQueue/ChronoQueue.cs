@@ -42,11 +42,11 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         };
         options.PostEvictionCallbacks.Add(_globalPostEvictionCallback);
         _queue.Enqueue(id);    
-        _memoryCache.Set(id, item, options);
+        _memoryCache.Set(id, item.Item, options);
         Interlocked.Increment(ref _count);
     }
 
-    public bool TryDequeue(out ChronoQueueItem<T> item)
+    public bool TryDequeue(out T item)
     {
         item = default;
 
@@ -61,7 +61,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         return false;
     }
     
-    public bool TryPeek(out ChronoQueueItem<T> item)
+    public bool TryPeek(out T item)
     {
         item = default;
 
