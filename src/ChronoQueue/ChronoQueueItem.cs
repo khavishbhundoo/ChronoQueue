@@ -2,7 +2,7 @@ using System;
 
 namespace ChronoQueue;
 
-public readonly struct ChronoQueueItem<TInner> :  IDisposable
+public readonly struct ChronoQueueItem<TInner> 
 {
     public TInner Item { get; }
     public DateTime ExpiresAt { get; }
@@ -11,13 +11,5 @@ public readonly struct ChronoQueueItem<TInner> :  IDisposable
     {
         Item = item;
         ExpiresAt = expiresAt;
-    }
-
-    public void Dispose()
-    {
-        if (Item is IDisposable d)
-        {
-            d.Dispose();
-        }
     }
 }

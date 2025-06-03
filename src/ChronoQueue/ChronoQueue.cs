@@ -24,10 +24,6 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         {
             EvictionCallback = (_, value, reason, _) =>
             {
-                if (value is ChronoQueueItem<T> item)
-                {
-                    item.Dispose();  
-                }
                 if (reason != EvictionReason.Removed)
                 {
                     Interlocked.Decrement(ref _count);
