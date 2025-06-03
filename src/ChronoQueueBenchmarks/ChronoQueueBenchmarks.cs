@@ -1,6 +1,6 @@
+using System;
 using BenchmarkDotNet.Attributes;
 using ChronoQueue;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace ChronoQueueBenchmark;
 
