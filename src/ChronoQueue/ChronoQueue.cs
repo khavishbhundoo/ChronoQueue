@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -34,7 +35,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         if(item.ExpiresAt <= DateTimeOffset.UtcNow)
             return;
         
-        var id = GetNextCacheKey();
+        var id = Interlocked.Increment(ref _idCounter);
         
         var options = new MemoryCacheEntryOptions
         {
@@ -76,6 +77,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         return false;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long Count()
     {
         return Interlocked.Read(ref _count);
@@ -85,6 +87,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     {
         _queue.Clear();
         _memoryCache.Clear();
+        Interlocked.Exchange(ref _count, 0);
     }
 
     public void Dispose()
@@ -92,6 +95,4 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         _memoryCache.Dispose();
         _queue.Clear();
     }
-
-    private long GetNextCacheKey() => Interlocked.Increment(ref _idCounter);
 }

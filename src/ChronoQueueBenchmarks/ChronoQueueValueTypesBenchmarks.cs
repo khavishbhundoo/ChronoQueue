@@ -38,23 +38,6 @@ public class ChronoQueueValueTypesBenchmarks : IDisposable
         }
     }
 
-    [IterationSetup(Target = nameof(FullSweepExpiredItems))]
-    public void SetupSweep()
-    {
-        _queue.Dispose();
-        var options = new MemoryCacheOptions
-        {
-            ExpirationScanFrequency = TimeSpan.FromSeconds(1)
-        };
-        _queue = new ChronoQueue<int>(options);
-
-        for (var i = 0; i < ItemCount; i++)
-        {
-            var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddMilliseconds(-1));
-            _queue.Enqueue(item);
-        }
-    }
-
     [Benchmark]
     public void Enqueue_Items()
     {
@@ -69,15 +52,6 @@ public class ChronoQueueValueTypesBenchmarks : IDisposable
     public void Dequeue_Items()
     {
         while (_queue.TryDequeue(out _)) { }
-    }
-
-    [Benchmark]
-    public async Task FullSweepExpiredItems()
-    {
-        while (_queue.Count() > 0)
-        {
-            await Task.Yield();
-        }
     }
 
     [GlobalCleanup]
