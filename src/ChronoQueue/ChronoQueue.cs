@@ -23,11 +23,13 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         _globalPostEvictionCallback = new PostEvictionCallbackRegistration
         {
-            EvictionCallback = (_, _, _, _) =>
-            {
-                Interlocked.Decrement(ref _count);
-            }
+            EvictionCallback = OnEvicted
         };
+    }
+    
+    private void OnEvicted(object key, object value, EvictionReason reason, object state)
+    {
+        Interlocked.Decrement(ref _count);
     }
 
     public void Enqueue(ChronoQueueItem<T> item)
