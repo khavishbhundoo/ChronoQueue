@@ -13,6 +13,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     private readonly PostEvictionCallbackRegistration _globalPostEvictionCallback;
     private long _count;
     private long _idCounter;
+    private volatile bool _isDisposed;
+    
+    private bool IsDisposed => _isDisposed;
 
     public ChronoQueue(MemoryCacheOptions options = null)
     {
@@ -34,6 +37,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
     public void Enqueue(ChronoQueueItem<T> item)
     {
+        ThrowIfDisposed();
+        
         if(item.ExpiresAt <= DateTimeOffset.UtcNow)
             return;
         
@@ -51,6 +56,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
     public bool TryDequeue(out T item)
     {
+        ThrowIfDisposed();
+        
         item = default;
 
         while (_queue.TryDequeue(out var id))
@@ -73,13 +80,21 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     public void Flush()
     {
         _queue.Clear();
-        _memoryCache.Clear();
+        if (!IsDisposed) 
+            _memoryCache.Clear();
         Interlocked.Exchange(ref _count, 0);
     }
 
     public void Dispose()
     {
+        if (IsDisposed) return;
+        Flush();
         _memoryCache.Dispose();
-        _queue.Clear();
+        _isDisposed = true;
+    }
+    
+    private void ThrowIfDisposed()
+    {
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
     }
 }
