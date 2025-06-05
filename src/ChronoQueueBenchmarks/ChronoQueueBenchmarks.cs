@@ -55,6 +55,18 @@ public class ChronoQueueBenchmarks : IDisposable
     {
         while (_queue.TryDequeue(out _)) { }
     }
+    
+    [Benchmark]
+    public void TryPeek_Item()
+    {
+        while (_queue.TryPeek(out _)) { }
+    }
+    
+    [Benchmark]
+    public void Flush_Items()
+    {
+        _queue.Flush();
+    }
 
     [GlobalCleanup]
     public void Dispose()
