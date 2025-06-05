@@ -23,17 +23,15 @@ public class ChronoQueueValueTypesBenchmarks : IDisposable
     [IterationSetup(Target = nameof(Enqueue_Items))]
     public void SetupEnqueue()
     {
-        _queue.Dispose();
-        _queue = new ChronoQueue<int>();
+        _queue.Flush();
     }
 
     [IterationSetup(Target = nameof(Dequeue_Items))]
     public void SetupDequeue()
     {
-        _queue.Dispose();
-        _queue = new ChronoQueue<int>();
-
-        for (int i = 0; i < ItemCount; i++)
+        _queue.Flush();
+        
+        for (var i = 0; i < ItemCount; i++)
         {
             var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
             _queue.Enqueue(item);
