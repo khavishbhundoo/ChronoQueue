@@ -63,21 +63,6 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         }
         return false;
     }
-    
-    public bool TryPeek(out T item)
-    {
-        item = default;
-
-        while (_queue.TryPeek(out var id))
-        {
-            if (_memoryCache.TryGetValue(id, out item))
-            {
-                return true;
-            }
-            _memoryCache.Remove(id);
-        }
-        return false;
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long Count()
