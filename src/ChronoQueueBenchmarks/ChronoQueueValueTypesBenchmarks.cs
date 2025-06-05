@@ -1,10 +1,12 @@
-using System;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 using ChronoQueue;
 
 namespace ChronoQueueBenchmarks;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net80)]
+[SimpleJob(RuntimeMoniker.Net90)]
 public class ChronoQueueValueTypesBenchmarks : IDisposable
 {
     private ChronoQueue<int> _queue;
