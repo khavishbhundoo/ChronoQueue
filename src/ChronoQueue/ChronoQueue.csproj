@@ -1,8 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <PackageId>khavishbhundoo.ChronoQueue</PackageId>
+        <Title>ChronoQueue</Title>
+        <Product>ChronoQueue</Product>
         <AssemblyAttributes>InternalsVisibleTo("ChronoQueueUnitTests")</AssemblyAttributes>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Khavish Anshudass Bhundoo</Authors>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/khavishbhundoo/ChronoQueue</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>

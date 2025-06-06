@@ -1,0 +1,47 @@
+name: Publish to Nuget.org
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  DOTNET_VERSION: 9.0.x
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_INSTALL_DIR: "./.dotnet"
+  
+permissions:
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+          
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Build & Test
+        run: |
+          dotnet restore
+          dotnet build --configuration Release --no-restore
+          dotnet test  --configuration Release --collect:"XPlat Code Coverage"
+          
+      - name: Pack NuGet package
+        run: dotnet pack --configuration Release --no-build -o ./nupkg /p:Version=${{ github.git_ref_name }}
+          
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nupkg/*.nupkg
+
+      - name: Push to NuGet.org
+        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+          
+    
