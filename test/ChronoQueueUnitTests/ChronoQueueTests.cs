@@ -69,4 +69,14 @@ public class ChronoQueueTests
         queue.Flush();
         queue.Count().ShouldBe(0);
     }
+    
+    [Fact]
+    public void Enqueue_ExpiredItem_Then_Should_Throw_ChronoQueueItemExpiredException()
+    {
+        using var queue = new ChronoQueue<string>();
+        var expiryTime = DateTime.UtcNow.AddSeconds(-1);
+        var item = new ChronoQueueItem<string>("test1", expiryTime);
+        
+        Should.Throw<ChronoQueueItemExpiredException>(() => queue.Enqueue(item));
+    }
 }
