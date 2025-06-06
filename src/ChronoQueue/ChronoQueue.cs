@@ -34,13 +34,13 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     {
         Interlocked.Decrement(ref _count);
     }
-
+    
     public void Enqueue(ChronoQueueItem<T> item)
     {
         ThrowIfDisposed();
         
         if(item.ExpiresAt <= DateTimeOffset.UtcNow)
-            return;
+            throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
         
         var id = Interlocked.Increment(ref _idCounter);
         
