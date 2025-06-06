@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ChronoQueue;
@@ -17,6 +18,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     private readonly ConcurrentQueue<long> _queue = new();
     private readonly MemoryCache _memoryCache;
     private readonly PostEvictionCallbackRegistration _globalPostEvictionCallback;
+    private readonly PeriodicTimer _cleanupTimer = new(TimeSpan.FromMilliseconds(100));
+    private readonly CancellationTokenSource _cts = new();
     private long _count;
     private long _idCounter;
     private volatile bool _isDisposed;
@@ -39,6 +42,12 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         {
             EvictionCallback = OnEvicted
         };
+        
+        Task.Factory.StartNew(
+            AdaptiveExpiredItemsCleanup,
+            _cts.Token,
+            TaskCreationOptions.LongRunning,
+            TaskScheduler.Default);
     }
     
     private void OnEvicted(object key, object value, EvictionReason reason, object state)
@@ -67,7 +76,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         var options = new MemoryCacheEntryOptions
         {
-            AbsoluteExpiration = item.ExpiresAt
+            AbsoluteExpiration = item.ExpiresAt,
+            Priority = CacheItemPriority.NeverRemove,
         };
         options.PostEvictionCallbacks.Add(_globalPostEvictionCallback);
         _queue.Enqueue(id);    
@@ -120,11 +130,44 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         Interlocked.Exchange(ref _count, 0);
     }
     
+    private async ValueTask AdaptiveExpiredItemsCleanup()
+    {
+        const long mb = 1024 * 1024;
+        const long lowPressure = 64 * mb;
+        const long midPressure = 128 * mb;
+        const long highPressure = 256 * mb;
+        
+        while (await _cleanupTimer.WaitForNextTickAsync(_cts.Token))
+        {
+            var memoryUsed = GC.GetTotalMemory(false); // In bytes
+            
+            var compactFraction = memoryUsed switch
+            {
+                < lowPressure => Count() < 10_000 ? 0.05 : 0.10,
+                < midPressure => Count() < 10_000 ? 0.10 : 0.15,
+                < highPressure => 0.20,
+                _ => 0.25
+            };
+
+            if (Count() > 0)
+            {
+                _memoryCache.Compact(compactFraction);
+                //Console.WriteLine($"[Cleanup] Count={Count()}, Mem={memoryUsed / 1024 / 1024}MB, Compact={compactFraction}");
+            }
+                
+
+        }
+    }
+
+    
     public void Dispose()
     {
         if (IsDisposed) return;
         Flush();
+        _cts.Cancel();
+        _cleanupTimer.Dispose();
         _memoryCache.Dispose();
+        _cts.Dispose();
         _isDisposed = true;
     }
     
