@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: "/"
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    open-pull-requests-limit: 25
+    rebase-strategy: "auto"
+    labels:
+      - "Microsoft package updates"
+    groups:
+      nuget-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: "build"
+      include: "scope"
