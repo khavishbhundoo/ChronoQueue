@@ -79,4 +79,42 @@ public class ChronoQueueTests
         
         Should.Throw<ChronoQueueItemExpiredException>(() => queue.Enqueue(item));
     }
+    
+    [Fact]
+    public async Task Enqueue_With_DisposeOnExpiry_Expired_Item_After_Lifetime_Dispose_Should_Be_Called()
+    {
+        var q = new AwesomeClass();
+        using var queue = new ChronoQueue<AwesomeClass>();
+        var item = new ChronoQueueItem<AwesomeClass>(q, DateTime.UtcNow.AddMilliseconds(100), true);
+
+        queue.Enqueue(item);
+        queue.Count().ShouldBe(1);
+
+        await Task.Delay(200);
+
+        var success = queue.TryDequeue(out var result);
+        success.ShouldBeFalse();
+        
+        await Task.Delay(1); // Give time for callback to decrement count
+        
+        queue.Count().ShouldBe(0);
+        result.ShouldBeNull();
+        Should.Throw<ObjectDisposedException>(() => q.Dispose());
+    }
+}
+
+class AwesomeClass : IDisposable
+{
+    private volatile bool _disposed;
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _disposed = true;
+        }
+        else
+        {
+            throw new ObjectDisposedException(nameof(AwesomeClass));
+        }
+    }
 }
