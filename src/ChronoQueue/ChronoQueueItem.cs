@@ -10,6 +10,6 @@ public readonly struct ChronoQueueItem<TInner>
     public ChronoQueueItem(TInner item, DateTimeOffset expiresAt)
     {
         Item = item;
-        ExpiresAt = expiresAt;
+        ExpiresAt = expiresAt.ToUniversalTime();
     }
 }
