@@ -49,7 +49,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     /// <summary>
     /// Enqueues a time-aware item into the queue.
     /// </summary>
-    /// <param name="item">The item to enqueue, including its expiration timestamp.</param>
+    /// The <see cref="ChronoQueueItem{T}"/> to enqueue, containing the value and its absolute expiration time.
     /// <exception cref="ChronoQueueItemExpiredException">
     /// Thrown if the item has already expired at the time of insertion.
     /// </exception>
