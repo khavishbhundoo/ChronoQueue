@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.0...0.1.1) (2025-06-07)
+
+
+### Build
+
+* Add missing metadata for nuget.org publishing ([#7](https://github.com/khavishbhundoo/ChronoQueue/issues/7)) ([cc4b758](https://github.com/khavishbhundoo/ChronoQueue/commit/cc4b75879cdd95a15100078fbe2358a3fc66fd57))
+* Do not pack benchmark project ([#5](https://github.com/khavishbhundoo/ChronoQueue/issues/5)) ([dde817c](https://github.com/khavishbhundoo/ChronoQueue/commit/dde817c94f9247fcffac9d82e1066e6c612354ee))
+
 ## [0.1.0](https://github.com/khavishbhundoo/ChronoQueue/compare/0.0.1...0.1.0) (2025-06-07)
 
 
