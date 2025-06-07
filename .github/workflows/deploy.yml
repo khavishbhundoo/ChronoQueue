@@ -43,15 +43,9 @@ jobs:
           path: ./nupkg/*
 
       - name: Push .nupkg to NuGet.org
-        run: dotnet nuget push ./nupkg/*.nupkg \
-          --source https://api.nuget.org/v3/index.json \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate
+        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
 
       - name: Push .snupkg to NuGet.org
-        run: dotnet nuget push ./nupkg/*.snupkg \
-          --source https://api.nuget.org/v3/index.json \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate || true
+        run: dotnet nuget push ./nupkg/*.snupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate || true
           
     
