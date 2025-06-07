@@ -94,9 +94,6 @@ public class ChronoQueueTests
 
         var success = queue.TryDequeue(out var result);
         success.ShouldBeFalse();
-        
-        await Task.Delay(1); // Give time for callback to decrement count
-        
         queue.Count().ShouldBe(0);
         result.ShouldBeNull();
         Should.Throw<ObjectDisposedException>(() => q.Dispose());

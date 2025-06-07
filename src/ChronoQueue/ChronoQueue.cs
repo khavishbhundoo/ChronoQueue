@@ -52,14 +52,14 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     
     private void OnEvicted(object key, object value, EvictionReason reason, object state)
     {
-        if (value is (T item, bool dispose))
-        {
-            if (dispose && reason != EvictionReason.Removed && item is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
-        }
+        if (value is not (T item, bool dispose)) return;
+        if (reason == EvictionReason.Removed) return;
         Interlocked.Decrement(ref _count);
+                
+        if (dispose && item is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
     
     /// <summary>
@@ -111,6 +111,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
             if (_memoryCache.TryGetValue(id, out (T,bool) cachedValue))
             {
                 _memoryCache.Remove(id);
+                Interlocked.Decrement(ref _count);
                 item = cachedValue.Item1;
                 return true;
             }
