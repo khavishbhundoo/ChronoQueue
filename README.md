@@ -1,8 +1,8 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=khavishbhundoo_ChronoQueue&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=khavishbhundoo_ChronoQueue)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=khavishbhundoo_ChronoQueue&metric=coverage)](https://sonarcloud.io/summary/new_code?id=khavishbhundoo_ChronoQueue)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=khavishbhundoo_ChronoQueue&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=khavishbhundoo_ChronoQueue)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=khavishbhundoo_ChronoQueue&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=khavishbhundoo_ChronoQueue)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=khavishbhundoo_ChronoQueue&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=khavishbhundoo_ChronoQueue)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
 
 # ChronoQueue
 ChronoQueue<T> is a high-performance, thread-safe, time-aware FIFO queue with automatic item expiration. It is designed for scenarios where you need time-based eviction of in-memory data, such as TTL-based task buffering, lightweight scheduling, or caching with strict ordering.
