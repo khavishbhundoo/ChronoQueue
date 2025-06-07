@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.4...0.1.5) (2025-06-07)
+
+
+### Refactoring
+
+* Cleanup properties from csproj & update readme ([#14](https://github.com/khavishbhundoo/ChronoQueue/issues/14)) ([ce5f8d8](https://github.com/khavishbhundoo/ChronoQueue/commit/ce5f8d8a86981b6da4bfa88b5af12c037c9310b4))
+
 ## [0.1.4](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.3...0.1.4) (2025-06-07)
 
 
