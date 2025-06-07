@@ -4,6 +4,7 @@
         <OutputType>Exe</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
         <SonarQubeExclude>true</SonarQubeExclude>
