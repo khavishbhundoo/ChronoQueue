@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.3...0.1.4) (2025-06-07)
+
+
+### Build
+
+* include symbols during packing ([#12](https://github.com/khavishbhundoo/ChronoQueue/issues/12)) ([0d28a0a](https://github.com/khavishbhundoo/ChronoQueue/commit/0d28a0a23399b069023745204bdfc90b959936bf))
+
 ## [0.1.3](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.2...0.1.3) (2025-06-07)
 
 
