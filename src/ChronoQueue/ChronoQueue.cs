@@ -161,7 +161,6 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
             if (Count() > 0)
             {
                 _memoryCache.Compact(compactFraction);
-                //Console.WriteLine($"[Cleanup] Count={Count()}, Mem={memoryUsed / 1024 / 1024}MB, Compact={compactFraction}");
             }
                 
 
