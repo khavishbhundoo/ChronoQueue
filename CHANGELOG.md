@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.2...0.1.3) (2025-06-07)
+
+
+### Build
+
+* fix syntax for pushing nuget ([#10](https://github.com/khavishbhundoo/ChronoQueue/issues/10)) ([ad048f0](https://github.com/khavishbhundoo/ChronoQueue/commit/ad048f03a7256b0ce94f5f10b59e475c7f755ec5))
+
 ## [0.1.2](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.1...0.1.2) (2025-06-07)
 
 
