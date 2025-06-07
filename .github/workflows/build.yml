@@ -43,7 +43,7 @@ jobs:
       - name: SonarScanner for .NET 9 with pull request decoration support
         uses: highbyte/sonarscan-dotnet@v2.4.2
         with:
-          sonarProjectKey: khavishbhundoo_ChronoQueue
+          sonarProjectKey: ChronoQueue
           sonarProjectName: ChronoQueue
           sonarOrganization: khavishbhundoo
           dotnetTestArguments: --framework net9.0 --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
