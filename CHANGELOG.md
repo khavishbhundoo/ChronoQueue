@@ -1,0 +1,14 @@
+# Changelog
+
+## [0.1.0](https://github.com/khavishbhundoo/ChronoQueue/compare/0.0.1...0.1.0) (2025-06-07)
+
+
+### Features
+
+* Introduce ChronoQueue ([#1](https://github.com/khavishbhundoo/ChronoQueue/issues/1)) ([191300e](https://github.com/khavishbhundoo/ChronoQueue/commit/191300edbac38e2d7fcb87bf8460ac78a49520e9))
+
+
+### Build
+
+* Bump the nuget-dependencies group with 4 updates ([#3](https://github.com/khavishbhundoo/ChronoQueue/issues/3)) ([c34da79](https://github.com/khavishbhundoo/ChronoQueue/commit/c34da79f5435f31730e39e10600b49bb2ddf0cd8))
+* Use new project key for sonarqube ([#4](https://github.com/khavishbhundoo/ChronoQueue/issues/4)) ([358e1cb](https://github.com/khavishbhundoo/ChronoQueue/commit/358e1cb5301f822ad3d8218a059b2d6684dc203a))
