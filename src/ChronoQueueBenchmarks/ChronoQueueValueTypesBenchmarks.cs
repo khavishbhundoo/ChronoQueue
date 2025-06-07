@@ -35,11 +35,22 @@ public class ChronoQueueValueTypesBenchmarks : IDisposable
     public void SetupDequeue()
     {
         _queue.Flush();
-        
-        for (var i = 0; i < ItemCount; i++)
+
+        if (ItemCount >= 100_000)
         {
-            var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
-            _queue.Enqueue(item);
+            Parallel.For(0, ItemCount, i =>
+            {
+                var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            });
+        }
+        else
+        {
+            for (var i = 0; i < ItemCount; i++)
+            {
+                var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            }
         }
     }
     
@@ -48,10 +59,21 @@ public class ChronoQueueValueTypesBenchmarks : IDisposable
     {
         _queue.Flush();
 
-        for (var i = 0; i < ItemCount; i++)
+        if (ItemCount >= 100_000)
         {
-            var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
-            _queue.Enqueue(item);
+            Parallel.For(0, ItemCount, i =>
+            {
+                var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            });
+        }
+        else
+        {
+            for (var i = 0; i < ItemCount; i++)
+            {
+                var item = new ChronoQueueItem<int>(9, DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            }
         }
     }
 

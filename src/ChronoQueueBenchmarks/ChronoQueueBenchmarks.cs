@@ -36,10 +36,21 @@ public class ChronoQueueBenchmarks : IDisposable
     {
         _queue.Flush();
 
-        for (var i = 0; i < ItemCount; i++)
+        if (ItemCount >= 100_000)
         {
-            var item = new ChronoQueueItem<string>("item", DateTime.UtcNow.AddSeconds(10));
-            _queue.Enqueue(item);
+            Parallel.For(0, ItemCount, i =>
+            {
+                var item = new ChronoQueueItem<string>("item", DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            });
+        }
+        else
+        {
+            for (var i = 0; i < ItemCount; i++)
+            {
+                var item = new ChronoQueueItem<string>("item", DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            }
         }
     }
     
@@ -48,10 +59,21 @@ public class ChronoQueueBenchmarks : IDisposable
     {
         _queue.Flush();
 
-        for (var i = 0; i < ItemCount; i++)
+        if (ItemCount >= 100_000)
         {
-            var item = new ChronoQueueItem<string>("item", DateTime.UtcNow.AddSeconds(10));
-            _queue.Enqueue(item);
+            Parallel.For(0, ItemCount, i =>
+            {
+                var item = new ChronoQueueItem<string>("item", DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            });
+        }
+        else
+        {
+            for (var i = 0; i < ItemCount; i++)
+            {
+                var item = new ChronoQueueItem<string>("item", DateTime.UtcNow.AddSeconds(10));
+                _queue.Enqueue(item);
+            }
         }
     }
     
