@@ -1,3 +1,4 @@
+[![NuGet](https://img.shields.io/nuget/v/khavishbhundoo.ChronoQueue.svg)](https://www.nuget.org/packages/khavishbhundoo.ChronoQueue/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
@@ -63,6 +64,7 @@ The internal cleanup logic uses `GC.GetTotalMemory(false)` to adaptively determi
 ## 📦 Usage
 
 ```csharp
+using ChronoQueue;
 var queue = new ChronoQueue<string>();
 
 queue.Enqueue(new ChronoQueueItem<string>("Hello", DateTimeOffset.UtcNow.AddSeconds(10)));
