@@ -5,7 +5,6 @@ on:
       - '*'
 
 env:
-  DOTNET_VERSION: 9.0.x
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_INSTALL_DIR: "./.dotnet"
   
@@ -24,7 +23,9 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: |
+            8.x.x
+            9.x.x
           
       - name: Build & Test
         run: |
