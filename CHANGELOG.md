@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.7](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.6...0.1.7) (2025-06-08)
+
+
+### Performance Improvements
+
+* reduce MemoryCache boxing ([#21](https://github.com/khavishbhundoo/ChronoQueue/issues/21)) ([af83013](https://github.com/khavishbhundoo/ChronoQueue/commit/af83013fc1f31ba3a3e96b5e0cb7a8cfec37e5a3))
+
+
+### Documentation updates
+
+* clarify ChronoQueue locking behavior ([#19](https://github.com/khavishbhundoo/ChronoQueue/issues/19)) ([ebf2847](https://github.com/khavishbhundoo/ChronoQueue/commit/ebf284758d99be862eb5d669ce3e50c9a3f5908e))
+
 ## [0.1.6](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.5...0.1.6) (2025-06-08)
 
 
