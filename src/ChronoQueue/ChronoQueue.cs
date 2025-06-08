@@ -15,7 +15,7 @@ namespace ChronoQueue;
 /// <typeparam name="T">The type of items stored in the queue.</typeparam>
 public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 {
-    private readonly ConcurrentQueue<long> _queue = new();
+    private readonly ConcurrentQueue<object> _queue = new();
     private readonly MemoryCache _memoryCache;
     private readonly PostEvictionCallbackRegistration _globalPostEvictionCallback;
     private readonly PeriodicTimer _cleanupTimer = new(TimeSpan.FromMilliseconds(1));
@@ -84,8 +84,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         if(item.ExpiresAt <= DateTimeOffset.UtcNow)
             throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
-        
-        var id = Interlocked.Increment(ref _idCounter);
+
+        object id = Interlocked.Increment(ref _idCounter);
         
         var options = new MemoryCacheEntryOptions
         {
