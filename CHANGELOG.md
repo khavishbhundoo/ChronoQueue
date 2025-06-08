@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.6](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.5...0.1.6) (2025-06-08)
+
+
+### Performance Improvements
+
+* Improve memory compaction frequency ([#18](https://github.com/khavishbhundoo/ChronoQueue/issues/18)) ([efed5a9](https://github.com/khavishbhundoo/ChronoQueue/commit/efed5a981e66d02a286c85a9ecacdfc160cf20c4))
+
+
+### Documentation updates
+
+* Improve documentation for API methods ([#16](https://github.com/khavishbhundoo/ChronoQueue/issues/16)) ([07d7d06](https://github.com/khavishbhundoo/ChronoQueue/commit/07d7d06ffc242b915a481c7035e8d0ca77a5cab3))
+
 ## [0.1.5](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.4...0.1.5) (2025-06-07)
 
 
