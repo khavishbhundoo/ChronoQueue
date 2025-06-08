@@ -85,6 +85,19 @@ Console.WriteLine(queue.Count()); // 0
 
 ```
 
+### ⏱ Performance
+
+| Method         | Time Complexity                  | Notes                                                                 |
+|----------------|----------------------------------|-----------------------------------------------------------------------|
+| `Enqueue`      | **O(1)**                         | Adds item to queue and MemoryCache                                    |
+| `TryDequeue`   | **Best:** O(1)                   | First item is valid                                                   |
+|                | **Worst:** O(n)                  | Scans over expired items                                              |
+| `Count()`      | **O(1)**                         | Atomic read via `Interlocked.Read`                                    |
+| `Flush()`      | **O(n)**                         | Clears both queue and cache                                           |
+| `Dispose()`    | **O(n)**                         | Calls `Flush()` + disposes all resources                              |
+
+> ❗ Expired items are removed from the internal `MemoryCache` via background compaction, but their **queue IDs remain until a dequeue attempt**.
+
 ## 📊 Benchmark
 
 ```
