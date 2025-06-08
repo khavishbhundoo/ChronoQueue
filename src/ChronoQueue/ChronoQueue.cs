@@ -18,11 +18,14 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     private readonly ConcurrentQueue<long> _queue = new();
     private readonly MemoryCache _memoryCache;
     private readonly PostEvictionCallbackRegistration _globalPostEvictionCallback;
-    private readonly PeriodicTimer _cleanupTimer = new(TimeSpan.FromMilliseconds(100));
+    private readonly PeriodicTimer _cleanupTimer = new(TimeSpan.FromMilliseconds(1));
     private readonly CancellationTokenSource _cts = new();
     private long _count;
     private long _idCounter;
     private volatile bool _isDisposed;
+
+    /// Optimistically tracks earliest expiry to reduce compaction; not always precise under concurrency.
+    private long _nextExpiryTicks = long.MaxValue;
     
     private bool IsDisposed => _isDisposed;
 
@@ -93,6 +96,14 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         _queue.Enqueue(id);    
         _memoryCache.Set(id, (item.Item, item.DisposeOnExpiry), options);
         Interlocked.Increment(ref _count);
+        
+        var expiryTicks = item.ExpiresAt.UtcTicks;
+        var nextExpiryTicks = Interlocked.Read(ref _nextExpiryTicks);
+        
+        if (expiryTicks < nextExpiryTicks)
+        {
+            Interlocked.CompareExchange(ref _nextExpiryTicks, expiryTicks, nextExpiryTicks);
+        }
     }
 
     /// <summary>
@@ -141,6 +152,12 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     {
         return Interlocked.Read(ref _count);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool HasItemsExpired()
+    {
+       return Interlocked.Read(ref _nextExpiryTicks) < DateTimeOffset.UtcNow.UtcTicks;
+    }
     
     /// <summary>
     /// Clears all queued items and resets the internal state.
@@ -154,6 +171,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         if (!IsDisposed) 
             _memoryCache.Clear();
         Interlocked.Exchange(ref _count, 0);
+        Interlocked.Exchange(ref _nextExpiryTicks, long.MaxValue);
+
     }
     
     private async ValueTask AdaptiveExpiredItemsCleanup()
@@ -174,13 +193,14 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
                 < highPressure => 0.20,
                 _ => 0.25
             };
+            
+            if(Count() == 0)
+                Interlocked.Exchange(ref _nextExpiryTicks, long.MaxValue);
 
-            if (Count() > 0)
+            if (HasItemsExpired() && Count() > 0)
             {
                 _memoryCache.Compact(compactFraction);
             }
-                
-
         }
     }
 
