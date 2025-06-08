@@ -72,6 +72,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     /// <exception cref="ObjectDisposedException">
     /// Thrown if the queue has already been disposed.
     /// </exception>
+    /// <remarks>
+    /// Time complexity: O(1)
+    /// </remarks>
     public void Enqueue(ChronoQueueItem<T> item)
     {
         ThrowIfDisposed();
@@ -100,6 +103,14 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     /// <exception cref="ObjectDisposedException">
     /// Thrown if the queue has already been disposed.
     /// </exception>
+    /// <remarks>
+    /// Time complexity:
+    /// Best case: O(1) – first item is valid.
+    /// Worst case: O(n) – all items are expired.
+    ///
+    /// Expired items are removed from the internal cache automatically via background compaction,
+    /// but their corresponding IDs remain in the queue until dequeued.
+    /// </remarks>
     public bool TryDequeue(out T item)
     {
         ThrowIfDisposed();
@@ -122,6 +133,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     /// <summary>
     /// Returns the current number of active (non-expired) items in the queue.
     /// </summary>
+    /// <remarks>
+    /// Time complexity: O(1)
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long Count()
     {
@@ -131,6 +145,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     /// <summary>
     /// Clears all queued items and resets the internal state.
     /// </summary>
+    /// <remarks>
+    /// Time complexity: O(n) – where n is the number of items in the queue.
+    /// </remarks>
     public void Flush()
     {
         _queue.Clear();

@@ -62,6 +62,9 @@ The internal cleanup logic uses `GC.GetTotalMemory(false)` to adaptively determi
 | `≥ 256MB`           | any                | `0.25`              |
 
 ## 📦 Usage
+Install the package via NuGet:
+
+`dotnet add package khavishbhundoo.ChronoQueue`
 
 ```csharp
 using ChronoQueue;
