@@ -6,7 +6,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ChronoQueue&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=ChronoQueue)
 
 # ChronoQueue
-ChronoQueue is a high-performance, thread-safe, time-aware FIFO queue with automatic item expiration. It is designed for scenarios where you need time-based eviction of in-memory data, such as TTL-based task buffering, lightweight scheduling, or caching with strict ordering.
+ChronoQueue is a thread-safe, time-aware FIFO queue with automatic item expiration. It is designed for scenarios where you need time-based eviction of in-memory data, such as TTL-based task buffering, lightweight scheduling, or caching with strict ordering.
 Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a dedicated MemoryCache instance for managing expiration and cleanup of stale items.
 
 ## 🚀 Features
@@ -14,7 +14,7 @@ Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a ded
 - ✅ FIFO ordering
 - 🕒 Per-item TTL using `DateTimeOffset`
 - 🧹 Background adaptive cleanup using `MemoryCache.Compact()` to handle memory pressure at scale and offer near realtime eviction of expired items 
-- ⚡ Fast in-memory access (no locks or semaphores)
+- ⚡ Fast in-memory access (no additional locks or semaphores at ChronoQueue level)
 - 🛡 Thread-safe, designed for high-concurrency use cases
 - 🧯 Disposal-aware and safe to use in long-lived applications
 
