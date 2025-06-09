@@ -47,5 +47,22 @@ public readonly struct ChronoQueueItem<T>
         Item = item;
         ExpiresAt = expiresAt.ToUniversalTime();
         DisposeOnExpiry = disposeOnExpiry;
+        
+        if(ExpiresAt <= DateTimeOffset.UtcNow)
+            throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
+        
+        var duration = ExpiresAt - DateTimeOffset.UtcNow;
+        var nowTicks = Environment.TickCount64;
+        ExpiryDeadlineTicks = nowTicks + (long)duration.TotalMilliseconds;
     }
+    
+    /// <summary>
+    /// Tick count (based on Environment.TickCount64) at which this item expires.
+    /// </summary>
+    internal long ExpiryDeadlineTicks { get; }
+    
+    /// <summary>
+    /// True if the current system tick count has passed the item's deadline.
+    /// </summary>
+    internal bool IsExpired => Environment.TickCount64 >= ExpiryDeadlineTicks;
 }

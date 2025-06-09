@@ -15,7 +15,7 @@ namespace ChronoQueue;
 /// <typeparam name="T">The type of items stored in the queue.</typeparam>
 public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 {
-    private readonly ConcurrentQueue<object> _queue = new();
+    private readonly ConcurrentQueue<QueueValue> _queue = new();
     private readonly MemoryCache _memoryCache;
     private readonly PostEvictionCallbackRegistration _globalPostEvictionCallback;
     private readonly PeriodicTimer _cleanupTimer = new(TimeSpan.FromMilliseconds(1));
@@ -55,11 +55,11 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     
     private void OnEvicted(object key, object value, EvictionReason reason, object state)
     {
-        if (value is not (T item, bool dispose)) return;
+        if (value is not CacheValue<T> cacheItem) return;
         if (reason == EvictionReason.Removed) return;
         Interlocked.Decrement(ref _count);
                 
-        if (dispose && item is IDisposable disposable)
+        if (cacheItem.DisposeOnExpiry && cacheItem.Item is IDisposable disposable)
         {
             disposable.Dispose();
         }
@@ -82,7 +82,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     {
         ThrowIfDisposed();
         
-        if(item.ExpiresAt <= DateTimeOffset.UtcNow)
+        if(item.IsExpired)
             throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
 
         object id = Interlocked.Increment(ref _idCounter);
@@ -90,11 +90,12 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         var options = new MemoryCacheEntryOptions
         {
             AbsoluteExpiration = item.ExpiresAt,
-            Priority = CacheItemPriority.NeverRemove,
+            Priority = CacheItemPriority.NeverRemove
         };
         options.PostEvictionCallbacks.Add(_globalPostEvictionCallback);
-        _queue.Enqueue(id);    
-        _memoryCache.Set(id, (item.Item, item.DisposeOnExpiry), options);
+        
+        _queue.Enqueue(new QueueValue(id, item.ExpiryDeadlineTicks));
+        _memoryCache.Set(id, new CacheValue<T>(item.Item, item.DisposeOnExpiry), options);
         Interlocked.Increment(ref _count);
         
         var expiryTicks = item.ExpiresAt.UtcTicks;
@@ -127,14 +128,16 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         ThrowIfDisposed();
         
         item = default;
-
-        while (_queue.TryDequeue(out var id))
+        while (_queue.TryDequeue(out var queueValue))
         {
-            if (_memoryCache.TryGetValue(id, out (T,bool) cachedValue))
+            if (Environment.TickCount64 >= queueValue.ExpiryDeadlineTicks)
+                continue;
+            
+            if (_memoryCache.TryGetValue(queueValue.Id, out CacheValue<T> cachedValue))
             {
-                _memoryCache.Remove(id);
+                _memoryCache.Remove(queueValue.Id);
                 Interlocked.Decrement(ref _count);
-                item = cachedValue.Item1;
+                item = cachedValue.Item;
                 return true;
             }
         }
