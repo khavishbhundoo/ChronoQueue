@@ -2,7 +2,7 @@ using System;
 
 namespace ChronoQueue;
 
-internal sealed record CacheValue<T> : IDisposable
+internal sealed class CacheValue<T> : IDisposable
 {
     public readonly T Item;
     private readonly bool _disposeOnExpiry;
