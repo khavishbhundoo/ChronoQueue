@@ -58,11 +58,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         if (value is not CacheValue<T> cacheItem) return;
         if (reason == EvictionReason.Removed) return;
         Interlocked.Decrement(ref _count);
-                
-        if (cacheItem.DisposeOnExpiry && cacheItem.Item is IDisposable disposable)
-        {
-            disposable.Dispose();
-        }
+        cacheItem.Dispose();
     }
     
     /// <summary>
