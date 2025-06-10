@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>ChronoQueueBenchmarks.ChronoQueueValueTypesBenchmarks-20250610-191314</title>
+<title>ChronoQueueBenchmarks.ChronoQueueValueTypesBenchmarks-20250610-224443</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -13,7 +13,7 @@
 </head>
 <body>
 <pre><code>
-BenchmarkDotNet v0.15.0, Windows 10 (10.0.19045.5917/22H2/2022Update)
+BenchmarkDotNet v0.15.1, Windows 10 (10.0.19045.5917/22H2/2022Update)
 Intel Core i7-4790K CPU 4.00GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
 .NET SDK 9.0.101
   [Host]   : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
@@ -26,36 +26,36 @@ Intel Core i7-4790K CPU 4.00GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
 <table>
 <thead><tr><th>Method </th><th>Job</th><th>Runtime</th><th>Categories</th><th>ItemCount</th><th>Mean [ns]</th><th>Error [ns]</th><th>StdDev [ns]</th><th>Median [ns]</th><th>Gen0 </th><th>Gen1</th><th>Gen2</th><th>Allocated [B]</th>
 </tr>
-</thead><tbody><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>100</td><td>81,454.1</td><td>5,869.3</td><td>17,120.9</td><td>76,850.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>11888</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>100</td><td>49,432.0</td><td>3,414.5</td><td>9,906.1</td><td>47,800.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>11888</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>1000</td><td>688,371.3</td><td>49,165.7</td><td>140,272.4</td><td>661,800.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>112688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>1000</td><td>540,896.8</td><td>40,734.6</td><td>116,218.2</td><td>523,350.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>112688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>10000</td><td>5,557,366.0</td><td>375,217.8</td><td>1,106,338.3</td><td>6,014,900.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>1120688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>10000</td><td>5,095,257.0</td><td>571,004.7</td><td>1,683,620.4</td><td>4,024,050.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>1120688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>100000</td><td>46,145,362.5</td><td>584,398.2</td><td>573,957.2</td><td>45,967,950.0</td><td>2000.0000</td><td>1000.0000</td><td>0.0000</td><td>11200688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>100000</td><td>43,311,185.9</td><td>856,918.2</td><td>1,986,038.5</td><td>43,379,000.0</td><td>2000.0000</td><td>1000.0000</td><td>0.0000</td><td>11200688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>1000000</td><td>486,902,471.4</td><td>8,478,746.1</td><td>7,516,187.6</td><td>486,754,000.0</td><td>26000.0000</td><td>1000.0000</td><td>0.0000</td><td>112000688</td>
-</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>1000000</td><td>427,680,186.7</td><td>8,240,174.1</td><td>7,707,864.0</td><td>426,506,500.0</td><td>26000.0000</td><td>1000.0000</td><td>0.0000</td><td>112000688</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>100</td><td>92,809.8</td><td>3,426.1</td><td>9,663.4</td><td>92,350.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>72496</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>100</td><td>98,332.6</td><td>5,499.8</td><td>15,779.9</td><td>90,300.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>72496</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>1000</td><td>861,495.7</td><td>24,785.5</td><td>69,907.9</td><td>837,000.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>739944</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>1000</td><td>897,767.2</td><td>24,200.2</td><td>68,651.8</td><td>880,950.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>739944</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>10000</td><td>10,221,546.0</td><td>795,644.0</td><td>2,345,974.6</td><td>10,471,800.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>7193992</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>10000</td><td>9,794,457.0</td><td>668,684.2</td><td>1,971,630.5</td><td>9,632,950.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>7193992</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>100000</td><td>138,068,347.8</td><td>2,741,937.1</td><td>5,216,820.7</td><td>139,780,850.0</td><td>11000.0000</td><td>5000.0000</td><td>1000.0000</td><td>70528240</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>100000</td><td>141,671,040.4</td><td>2,787,184.5</td><td>5,756,019.7</td><td>142,824,000.0</td><td>11000.0000</td><td>5000.0000</td><td>1000.0000</td><td>70600416</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>1000000</td><td>1,543,663,868.0</td><td>51,557,781.7</td><td>152,019,293.7</td><td>1,459,985,000.0</td><td>105000.0000</td><td>52000.0000</td><td>1000.0000</td><td>698100048</td>
-</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>1000000</td><td>1,667,059,018.0</td><td>64,614,275.6</td><td>190,516,663.2</td><td>1,754,510,500.0</td><td>106000.0000</td><td>53000.0000</td><td>1000.0000</td><td>703116504</td>
-</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>100</td><td>32,163.5</td><td>1,446.5</td><td>4,173.4</td><td>29,750.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>14320</td>
-</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>100</td><td>24,315.8</td><td>190.3</td><td>211.5</td><td>24,300.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>14320</td>
-</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>1000</td><td>411,632.6</td><td>10,089.0</td><td>28,456.2</td><td>416,600.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>115120</td>
-</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>1000</td><td>352,622.2</td><td>20,606.3</td><td>60,434.8</td><td>338,400.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>115120</td>
-</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>10000</td><td>2,624,817.0</td><td>304,606.7</td><td>898,139.9</td><td>2,341,450.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>1123120</td>
-</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>10000</td><td>2,521,330.0</td><td>340,184.9</td><td>1,003,043.0</td><td>2,010,650.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>1123120</td>
-</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>100000</td><td>28,493,452.0</td><td>563,146.7</td><td>1,423,143.8</td><td>28,492,600.0</td><td>2000.0000</td><td>1000.0000</td><td>0.0000</td><td>11203120</td>
-</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>100000</td><td>22,073,673.9</td><td>420,077.5</td><td>531,263.5</td><td>22,027,400.0</td><td>2000.0000</td><td>1000.0000</td><td>0.0000</td><td>11203120</td>
-</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>1000000</td><td>278,816,324.2</td><td>5,573,913.6</td><td>8,840,818.4</td><td>278,953,900.0</td><td>26000.0000</td><td>1000.0000</td><td>0.0000</td><td>112002496</td>
-</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>1000000</td><td>217,796,453.3</td><td>4,347,552.4</td><td>4,066,703.2</td><td>217,879,000.0</td><td>26000.0000</td><td>1000.0000</td><td>0.0000</td><td>112002832</td>
+</thead><tbody><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>100</td><td>60,313.7</td><td>4,207.0</td><td>12,070.8</td><td>58,900.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>7088</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>100</td><td>50,543.8</td><td>3,169.2</td><td>9,144.0</td><td>48,750.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>7088</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>1000</td><td>643,706.1</td><td>21,515.7</td><td>62,762.3</td><td>651,450.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>64688</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>1000</td><td>507,984.8</td><td>30,334.9</td><td>88,966.9</td><td>460,700.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>64688</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>10000</td><td>4,463,908.3</td><td>314,974.4</td><td>846,158.4</td><td>4,141,000.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>640688</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>10000</td><td>5,193,490.0</td><td>596,972.2</td><td>1,760,186.0</td><td>4,215,950.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>640688</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>100000</td><td>45,502,620.0</td><td>902,091.3</td><td>1,204,266.1</td><td>45,248,200.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>6400688</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>100000</td><td>41,896,767.9</td><td>836,930.2</td><td>1,746,985.1</td><td>42,055,700.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>6400688</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Dequeue</td><td>1000000</td><td>449,778,200.0</td><td>3,092,046.0</td><td>2,741,018.2</td><td>449,505,950.0</td><td>14000.0000</td><td>1000.0000</td><td>0.0000</td><td>64001752</td>
+</tr><tr><td>Dequeue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Dequeue</td><td>1000000</td><td>402,951,657.1</td><td>4,065,307.8</td><td>3,603,789.4</td><td>401,527,700.0</td><td>14000.0000</td><td>1000.0000</td><td>0.0000</td><td>64000064</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>100</td><td>96,512.6</td><td>5,054.1</td><td>14,501.1</td><td>93,500.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>72496</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>100</td><td>98,636.5</td><td>5,233.4</td><td>15,099.7</td><td>91,300.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>72496</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>1000</td><td>982,345.8</td><td>50,264.9</td><td>145,025.8</td><td>973,700.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>739944</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>1000</td><td>867,969.7</td><td>20,282.8</td><td>56,203.6</td><td>852,400.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>739944</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>10000</td><td>9,153,524.7</td><td>573,583.8</td><td>1,664,070.8</td><td>9,112,500.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>7193992</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>10000</td><td>10,496,121.0</td><td>870,573.6</td><td>2,566,905.9</td><td>10,411,350.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>7193992</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>100000</td><td>134,864,585.2</td><td>2,667,719.0</td><td>5,627,125.2</td><td>136,148,200.0</td><td>11000.0000</td><td>5000.0000</td><td>1000.0000</td><td>70600408</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>100000</td><td>133,061,628.8</td><td>2,642,865.3</td><td>5,457,975.5</td><td>131,199,600.0</td><td>11000.0000</td><td>5000.0000</td><td>1000.0000</td><td>70600408</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Enqueue</td><td>1000000</td><td>1,574,448,213.3</td><td>55,049,981.7</td><td>160,583,392.1</td><td>1,490,527,700.0</td><td>115000.0000</td><td>58000.0000</td><td>5000.0000</td><td>745909336</td>
+</tr><tr><td>Enqueue_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Enqueue</td><td>1000000</td><td>2,646,964,776.0</td><td>184,879,540.9</td><td>545,121,537.1</td><td>2,418,682,350.0</td><td>117000.0000</td><td>59000.0000</td><td>11000.0000</td><td>715558688</td>
+</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>100</td><td>33,356.6</td><td>2,079.7</td><td>6,099.5</td><td>31,200.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>9520</td>
+</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>100</td><td>28,664.0</td><td>1,891.6</td><td>5,577.5</td><td>25,350.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>9520</td>
+</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>1000</td><td>451,791.8</td><td>17,286.1</td><td>50,150.1</td><td>441,200.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>67120</td>
+</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>1000</td><td>397,827.6</td><td>19,318.1</td><td>56,351.9</td><td>402,500.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>67120</td>
+</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>10000</td><td>2,703,663.0</td><td>307,994.0</td><td>908,127.4</td><td>2,243,100.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>642784</td>
+</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>10000</td><td>2,430,421.0</td><td>368,399.8</td><td>1,086,235.1</td><td>1,743,350.0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>643120</td>
+</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>100000</td><td>28,617,195.6</td><td>570,107.1</td><td>1,598,641.5</td><td>28,855,500.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>6403120</td>
+</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>100000</td><td>21,300,612.5</td><td>411,542.4</td><td>535,121.4</td><td>21,221,950.0</td><td>1000.0000</td><td>0.0000</td><td>0.0000</td><td>6403120</td>
+</tr><tr><td>Flush_Items</td><td>.NET 8.0</td><td>.NET 8.0</td><td>Flush</td><td>1000000</td><td>273,975,341.7</td><td>5,458,032.3</td><td>7,096,984.3</td><td>275,613,650.0</td><td>14000.0000</td><td>1000.0000</td><td>0.0000</td><td>64003120</td>
+</tr><tr><td>Flush_Items</td><td>.NET 9.0</td><td>.NET 9.0</td><td>Flush</td><td>1000000</td><td>203,976,980.0</td><td>3,078,435.6</td><td>2,879,570.6</td><td>203,268,700.0</td><td>14000.0000</td><td>1000.0000</td><td>0.0000</td><td>64002496</td>
 </tr></tbody></table>
 </body>
 </html>
