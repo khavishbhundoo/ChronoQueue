@@ -55,14 +55,10 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     
     private void OnEvicted(object key, object value, EvictionReason reason, object state)
     {
-        if (value is not (T item, bool dispose)) return;
+        if (value is not CacheValue<T> cacheItem) return;
         if (reason == EvictionReason.Removed) return;
         Interlocked.Decrement(ref _count);
-                
-        if (dispose && item is IDisposable disposable)
-        {
-            disposable.Dispose();
-        }
+        cacheItem.Dispose();
     }
     
     /// <summary>
@@ -94,7 +90,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         };
         options.PostEvictionCallbacks.Add(_globalPostEvictionCallback);
         _queue.Enqueue(id);    
-        _memoryCache.Set(id, (item.Item, item.DisposeOnExpiry), options);
+        _memoryCache.Set(id, new CacheValue<T>(item.Item, item.DisposeOnExpiry), options);
         Interlocked.Increment(ref _count);
         
         var expiryTicks = item.ExpiresAt.UtcTicks;
@@ -130,11 +126,11 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
         while (_queue.TryDequeue(out var id))
         {
-            if (_memoryCache.TryGetValue(id, out (T,bool) cachedValue))
+            if (_memoryCache.TryGetValue(id, out CacheValue<T> cachedValue))
             {
                 _memoryCache.Remove(id);
                 Interlocked.Decrement(ref _count);
-                item = cachedValue.Item1;
+                item = cachedValue.Item;
                 return true;
             }
         }
