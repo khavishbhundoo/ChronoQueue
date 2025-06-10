@@ -4,6 +4,7 @@ using System.Globalization;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Exporters;
+using BenchmarkDotNet.Exporters.Json;
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 using Perfolizer.Horology;
@@ -25,6 +26,7 @@ var summaryStyle = new SummaryStyle(
 var config = ManualConfig.Create(DefaultConfig.Instance)
     .WithOption(ConfigOptions.DisableOptimizationsValidator, true)
     .WithSummaryStyle(summaryStyle)
+    .AddExporter(JsonExporter.Default)
     .AddExporter(MarkdownExporter.GitHub); // Export as GitHub markdown
 
 BenchmarkRunner.Run(typeof(Program).Assembly, config);
