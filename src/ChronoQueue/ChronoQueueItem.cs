@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace ChronoQueue;
 
@@ -8,7 +9,7 @@ namespace ChronoQueue;
 /// to ensure consistent expiry evaluation.
 /// </summary>
 /// <typeparam name="T">The type of the payload stored in the item.</typeparam>
-public readonly struct ChronoQueueItem<T> 
+public readonly struct ChronoQueueItem<T> : IDisposable
 {
     /// <summary>
     /// Gets the actual value stored in the queue item.
@@ -47,5 +48,29 @@ public readonly struct ChronoQueueItem<T>
         Item = item;
         ExpiresAt = expiresAt.ToUniversalTime();
         DisposeOnExpiry = disposeOnExpiry;
+        
+        var now = DateTime.UtcNow;
+        if(ExpiresAt <= now)
+            throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
+        
+        var duration = ExpiresAt - now;
+        var nowTicks = Environment.TickCount64;
+        ExpiryDeadlineTicks = nowTicks + (long)duration.TotalMilliseconds;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsExpired() => Environment.TickCount64 >= ExpiryDeadlineTicks;
+    
+    /// <summary>
+    /// Tick count (based on Environment.TickCount64) at which this item expires.
+    /// </summary>
+    internal long ExpiryDeadlineTicks { get; }
+
+    public void Dispose()
+    {
+        if (DisposeOnExpiry && Item is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 }

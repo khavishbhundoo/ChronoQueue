@@ -7,13 +7,13 @@
 
 # ChronoQueue
 ChronoQueue is a thread-safe, time-aware FIFO queue with automatic item expiration. It is designed for scenarios where you need time-based eviction of in-memory data, such as TTL-based task buffering, lightweight scheduling, or caching with strict ordering.
-Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a dedicated MemoryCache instance for managing expiration and cleanup of stale items.
+Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a ConcurrentDictionary + PeriodicTimer for managing expiration and cleanup of stale items.
 
 ## 🚀 Features
 
 - ✅ FIFO ordering
 - 🕒 Per-item TTL using `DateTimeOffset`
-- 🧹 Background adaptive cleanup using `MemoryCache.Compact()` to handle memory pressure at scale and offer near realtime eviction of expired items 
+- 🧹 Background cleanup every 100 ms for near realtime eviction of expired items 
 - ⚡ Fast in-memory access (no additional locks or semaphores at ChronoQueue level)
 - 🛡 Thread-safe, designed for high-concurrency use cases
 - 🧯 Disposal-aware and safe to use in long-lived applications
@@ -22,18 +22,28 @@ Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a ded
 
 ### `ChronoQueue<T>`
 
-| Method | Description |
-|--------|-------------|
-| `Enqueue(ChronoQueueItem<T>)` | Adds an item with an expiration timestamp. Throws if item is already expired or queue is disposed. |
-| `TryDequeue(out T item)` | Attempts to dequeue the next **non-expired** item. Returns `true` if successful. |
-| `Count()` | Returns the current number of active (non-expired) items in the queue. |
-| `Flush()` | Clears the queue and cache, resetting all internal state. |
-| `Dispose()` | Disposes all resources, cancels cleanup, and resets the queue. |
+| Method | Description                                                                                                                          |
+|--------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `Enqueue(ChronoQueueItem<T>)` | Adds an item with an expiration timestamp. Throws if item is already expired or queue is disposed.                                   |
+| `TryDequeue(out T item)` | Attempts to dequeue the next **non-expired** item, otherwise return default(T) . Returns `true` if non-expired found otherwise false |
+| `Count()` | Returns the current number of active (non-expired) items in the queue.                                                               |
+| `Flush()` | Clears the queue and cache, resetting all internal state.                                                                            |
+| `Dispose()` | Disposes all resources, cancels cleanup, and resets the queue.                                                                       |
 
 
-**Note**: If `T` is a reference type that implements `IDisposable` is it never disposed when dequeued for safety reasons.
-In case `T` expired before a dequeue operation, the item is disposed provided `DisposeOnExpiry` is set to true when creating
-`ChronoQueueItem`. 
+**Note**: If `T` is a reference type that implements `IDisposable` , it is disposed on expiry only if `DisposeOnExpiry` was set to true when creating
+`ChronoQueueItem`.
+
+### `ChronoQueue<T>`
+
+
+
+| Property          | Description                                                               |
+|-------------------|---------------------------------------------------------------------------|
+| `Item`            | Adds an item of type T to the queue                                       |
+| `ExpiresAt`       | Absolute time at which item T should expire in as a DateTimeOffset        |
+| `DisposeOnExpiry` | Auto-dispose expired IDisposable items if true otherwise false by default |
+
 
 Examples of usage for methods above can be found in this README and in unit tests
 
@@ -46,20 +56,6 @@ Examples of usage for methods above can be found in this README and in unit test
 
 - **`ObjectDisposedException`**  
   Thrown if any method is invoked on the queue after it has been disposed. This protects against operations on invalid or released resources.
-
-
-### 🧠 Memory Pressure Heuristics
-
-The internal cleanup logic uses `GC.GetTotalMemory(false)` to adaptively determine how aggressively to compact the underlying `MemoryCache`. The compaction fraction is scaled based on memory usage and queue size as follows:
-
-| Memory Used         | Queue Size         | Compaction Fraction |
-|---------------------|--------------------|---------------------|
-| `< 64MB`            | `< 10,000` items   | `0.05`              |
-| `< 64MB`            | `≥ 10,000` items   | `0.10`              |
-| `64MB – 128MB`      | `< 10,000` items   | `0.10`              |
-| `64MB – 128MB`      | `≥ 10,000` items   | `0.15`              |
-| `128MB – 256MB`     | any                | `0.20`              |
-| `≥ 256MB`           | any                | `0.25`              |
 
 ## 📦 Usage
 Install the package via NuGet:
@@ -87,16 +83,16 @@ Console.WriteLine(queue.Count()); // 0
 
 ### ⏱ Performance
 
-| Method         | Time Complexity                  | Notes                                                                 |
-|----------------|----------------------------------|-----------------------------------------------------------------------|
-| `Enqueue`      | **O(1)**                         | Adds item to queue and MemoryCache                                    |
-| `TryDequeue`   | **Best:** O(1)                   | First item is valid                                                   |
-|                | **Worst:** O(n)                  | Scans over expired items                                              |
-| `Count()`      | **O(1)**                         | Atomic read via `Interlocked.Read`                                    |
-| `Flush()`      | **O(n)**                         | Clears both queue and cache                                           |
-| `Dispose()`    | **O(n)**                         | Calls `Flush()` + disposes all resources                              |
+| Method         | Time Complexity                  | Notes                                    |
+|----------------|----------------------------------|------------------------------------------|
+| `Enqueue`      | **O(1)**                         | Adds item to queue and MemoryCache       |
+| `TryDequeue`   | **Best:** O(1)                   | First item is valid                      |
+|                | **Worst:** O(n)                  | Scans over N expired items               |
+| `Count()`      | **O(1)**                         | Atomic read via `Interlocked.Read`       |
+| `Flush()`      | **O(n)**                         | Clears both queue and cache              |
+| `Dispose()`    | **O(n)**                         | Calls `Flush()` + disposes all resources |
 
-> ❗ Expired items are removed from the internal `MemoryCache` via background compaction, but their **queue IDs remain until a dequeue attempt**.
+> ❗ Expired items are removed from the internal `ConcurrentDictionary` cache via background cleanup, but their **internal queue IDs remain until a dequeue attempt**.
 
 ChronoQueue aims to _work correctly_ and meet reasonable expectations by default while being fast. Benchmarking results are available [here](https://github.com/khavishbhundoo/ChronoQueue/tree/main/benchmarks), check them out!
 
