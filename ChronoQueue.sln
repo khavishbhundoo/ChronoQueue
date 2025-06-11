@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChronoQueueUnitTests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChronoQueueBenchmarks", "src\ChronoQueueBenchmarks\ChronoQueueBenchmarks.csproj", "{392DF611-A71E-4A6E-8EF8-F58A35D37B58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTests", "ConsoleAppTests\ConsoleAppTests.csproj", "{1910F0F0-5B50-4C5B-94CF-7E70D2FB8C0C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
