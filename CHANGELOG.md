@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.8...0.1.9) (2025-06-12)
+
+
+### Documentation updates
+
+* Fix typo in README ([#29](https://github.com/khavishbhundoo/ChronoQueue/issues/29)) ([1408bf3](https://github.com/khavishbhundoo/ChronoQueue/commit/1408bf3245c74d6ec69145daeb5c9519aabf011a))
+* update benchmarks ([#27](https://github.com/khavishbhundoo/ChronoQueue/issues/27)) ([596b8f1](https://github.com/khavishbhundoo/ChronoQueue/commit/596b8f1cda487f508f6d1f813e6750c0c1227536))
+
 ## [0.1.8](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.7...0.1.8) (2025-06-12)
 
 
