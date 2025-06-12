@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.8](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.7...0.1.8) (2025-06-12)
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#23](https://github.com/khavishbhundoo/ChronoQueue/issues/23)) ([6890904](https://github.com/khavishbhundoo/ChronoQueue/commit/689090447439bb0ed09c8b6bc083f5302a147897))
+
+
+### Performance Improvements
+
+* Remove MemoryCache ([#26](https://github.com/khavishbhundoo/ChronoQueue/issues/26)) ([ae87536](https://github.com/khavishbhundoo/ChronoQueue/commit/ae875369cfdbe4cf1f784ab10cb69ac163eb61b0))
+
+
+### Documentation updates
+
+* Export benchmarks as JSON ([#24](https://github.com/khavishbhundoo/ChronoQueue/issues/24)) ([2ffcc3e](https://github.com/khavishbhundoo/ChronoQueue/commit/2ffcc3ea7dd764c4defdf57af8187dfc9b7475d7))
+
 ## [0.1.7](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.6...0.1.7) (2025-06-08)
 
 
