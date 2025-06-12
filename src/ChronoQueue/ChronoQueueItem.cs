@@ -9,7 +9,7 @@ namespace ChronoQueue;
 /// to ensure consistent expiry evaluation.
 /// </summary>
 /// <typeparam name="T">The type of the payload stored in the item.</typeparam>
-public readonly struct ChronoQueueItem<T> : IDisposable
+public readonly struct ChronoQueueItem<T> 
 {
     /// <summary>
     /// Gets the actual value stored in the queue item.
@@ -65,12 +65,4 @@ public readonly struct ChronoQueueItem<T> : IDisposable
     /// Tick count (based on Environment.TickCount64) at which this item expires.
     /// </summary>
     internal long ExpiryDeadlineTicks { get; }
-
-    public void Dispose()
-    {
-        if (Item is IDisposable disposable)
-        {
-            disposable.Dispose();
-        }
-    }
 }

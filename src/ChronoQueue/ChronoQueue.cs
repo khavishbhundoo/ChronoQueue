@@ -87,8 +87,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
             if (chronoQueueItem.IsExpired())
             {
-                if (chronoQueueItem.DisposeOnExpiry)
-                    chronoQueueItem.Dispose();
+                if (chronoQueueItem.DisposeOnExpiry && chronoQueueItem.Item is IDisposable disposable)
+                    disposable.Dispose();
                 continue;
             }
 
