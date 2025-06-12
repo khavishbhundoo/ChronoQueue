@@ -68,7 +68,7 @@ public readonly struct ChronoQueueItem<T> : IDisposable
 
     public void Dispose()
     {
-        if (DisposeOnExpiry && Item is IDisposable disposable)
+        if (Item is IDisposable disposable)
         {
             disposable.Dispose();
         }
