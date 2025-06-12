@@ -34,7 +34,7 @@ Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a Con
 **Note**: If `T` is a reference type that implements `IDisposable` , it is disposed on expiry only if `DisposeOnExpiry` was set to true when creating
 `ChronoQueueItem`.
 
-### `ChronoQueue<T>`
+### `ChronoQueueItem<T>`
 
 
 
