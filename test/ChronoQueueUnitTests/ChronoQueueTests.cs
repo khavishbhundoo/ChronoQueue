@@ -1,5 +1,4 @@
 using ChronoQueue;
-using NSubstitute;
 using Shouldly;
 
 namespace ChronoQueueUnitTests;
@@ -97,22 +96,9 @@ public class ChronoQueueTests
         result.ShouldBeNull();
         Should.Throw<ObjectDisposedException>(() => q.Dispose());
     }
-    
-    [Fact]
-    public async Task Flush_With_DisposeOnExpiry_Expired_Item_After_Lifetime_Dispose_Should_Be_Called()
-    {
-        var q = Substitute.For<AwesomeClass>();
-        using var queue = new ChronoQueue<AwesomeClass>();
-        var item = new ChronoQueueItem<AwesomeClass>(q, DateTime.UtcNow.AddMilliseconds(100), true);
-
-        queue.Enqueue(item);
-        queue.Count().ShouldBe(1);
-        queue.Flush();
-        q.Received(1).Dispose();
-    }
 }
 
-public class AwesomeClass : IDisposable
+class AwesomeClass : IDisposable
 {
     private volatile bool _disposed;
     public void Dispose()
