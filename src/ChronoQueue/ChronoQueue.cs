@@ -8,8 +8,8 @@ namespace ChronoQueue;
 
 /// <summary>
 /// A thread-safe, in-memory, time-aware FIFO queue that evicts items based on expiration timestamps.
-/// Combines a <see cref="ConcurrentQueue{T}"/> for ordering and a <see cref="ConcurrentDictionary{TKey, TValue}"/> for fast access/removal.
-/// Expired items are skipped during dequeue, but not proactively removed.
+/// Combines a <see cref="ConcurrentQueue{T}"/> for insertion order and a <see cref="ConcurrentDictionary{TKey, TValue}"/> for fast lookup and removal.
+/// Expired items are proactively cleaned up in the background and are skipped during dequeue operations.
 /// </summary>
 /// <typeparam name="T">The type of values stored in the queue.</typeparam>
 public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
@@ -81,13 +81,13 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
         while (_queue.TryDequeue(out var id))
         {
-            _items.TryRemove(id, out var chronoQueueItem);
-            if (chronoQueueItem.ExpiryDeadlineTicks == 0) continue; //id not found
+            if (!_items.TryRemove(id, out var chronoQueueItem))
+                continue;
             Interlocked.Decrement(ref _count);
 
             if (chronoQueueItem.IsExpired())
             {
-                if (chronoQueueItem.DisposeOnExpiry && chronoQueueItem.Item is IDisposable disposable)
+                if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
                     disposable.Dispose();
                 continue;
             }
@@ -104,14 +104,11 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         {
             foreach (var (id, item) in _items)
             {
-                if (item.IsExpired() && _items.TryRemove(id, out var chronoQueueItem))
-                {
-                    if (chronoQueueItem.ExpiryDeadlineTicks == 0) continue; //id not found
-                    if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
-                        disposable.Dispose();
+                if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
+                if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
+                    disposable.Dispose();
 
-                    Interlocked.Decrement(ref _count);
-                }
+                Interlocked.Decrement(ref _count);
             }
         }
     }
@@ -134,8 +131,12 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     public void Flush()
     {
         _queue.Clear();
-        if (!IsDisposed)
-            _items.Clear();
+        foreach (var chronoQueueItem in _items.Values)
+        {
+            if (chronoQueueItem.IsExpired() && chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
+                disposable.Dispose();
+        }
+        _items.Clear();
         Interlocked.Exchange(ref _count, 0);
     }
 
@@ -148,7 +149,6 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         Flush();
         _cts.Cancel();
         _cleanupTimer.Dispose();
-        _items.Clear();
         _cts.Dispose();
         _isDisposed = true;
     }
