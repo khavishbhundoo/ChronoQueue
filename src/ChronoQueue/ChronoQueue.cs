@@ -150,9 +150,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         Interlocked.Exchange(ref _isFlushing, 0);
 
     }
-
-
-
+    
 
     /// <summary>
     /// Disposes the queue and cancels internal timers.
