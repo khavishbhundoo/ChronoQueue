@@ -21,6 +21,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     private long _count;
     private long _idCounter;
     private volatile bool _isDisposed;
+    private int _isFlushing;
 
     private bool IsDisposed => _isDisposed;
 
@@ -105,6 +106,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
             foreach (var (id, item) in _items)
             {
                 if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
+
                 if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
                     disposable.Dispose();
 
@@ -123,22 +125,34 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     public long Count() => Interlocked.Read(ref _count);
 
     /// <summary>
-    /// Clears all queued items and resets the internal state.
+    /// Atomically flushes the queue, ensuring only one thread performs the operation at a time.
+    /// Disposes expired items and clears all internal state.
     /// </summary>
     /// <remarks>
     /// Time Complexity: <b>O(n)</b> — where n is the number of total queued items.
     /// </remarks>
     public void Flush()
     {
-        _queue.Clear();
-        foreach (var chronoQueueItem in _items.Values)
+        // Atomically set _isFlushing to 1 if it was 0; otherwise exit.Only one flush at a time
+        if (Interlocked.CompareExchange(ref _isFlushing, 1, 0) != 0)
+            return;
+        
+        foreach (var (id, item) in _items)
         {
-            if (chronoQueueItem.IsExpired() && chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
+            if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
+
+            if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
                 disposable.Dispose();
         }
         _items.Clear();
+        _queue.Clear();
         Interlocked.Exchange(ref _count, 0);
+        Interlocked.Exchange(ref _isFlushing, 0);
+
     }
+
+
+
 
     /// <summary>
     /// Disposes the queue and cancels internal timers.
