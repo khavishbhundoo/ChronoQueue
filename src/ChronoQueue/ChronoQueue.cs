@@ -139,6 +139,15 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         foreach (var (id, item) in _items)
         {
+            if (item.DisposeOnFlush)
+            {
+                if (item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
+                {
+                    disposableItem.Dispose();
+                    continue;
+                }
+            }
+                
             if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
 
             if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })

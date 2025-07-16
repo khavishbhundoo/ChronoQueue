@@ -29,6 +29,15 @@ public readonly struct ChronoQueueItem<T>
     /// Defaults to <c>false</c>.
     /// </summary>
     public bool DisposeOnExpiry { get; }
+    
+    
+    /// <summary>
+    /// Indicates whether the item should be automatically disposed when the queue is flushed.
+    /// This applies only if <typeparamref name="T"/> is a reference type that implements <see cref="IDisposable"/>.
+    /// When set to <c>true</c> and the Flush() method is called on the queue, accessing it afterward may result in exceptions due to it being disposed.
+    /// Defaults to <c>false</c>.
+    /// </summary>
+    public bool DisposeOnFlush { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChronoQueueItem{T}"/> struct with the specified value and expiration time.
@@ -43,11 +52,18 @@ public readonly struct ChronoQueueItem<T>
     /// If set to <c>true</c> and the item expires before dequeuing, accessing it afterward may result in exceptions due to it being disposed.
     /// Defaults to <c>false</c>.
     /// </param>
-    public ChronoQueueItem(T item, DateTimeOffset expiresAt, bool disposeOnExpiry = false)
+    /// <param name="disposeOnFlush">
+    /// Specifies whether the item should be automatically disposed when the queue is flushed.
+    /// Applicable only if <typeparamref name="T"/> is a reference type implementing <see cref="IDisposable"/>.
+    /// If set to <c>true</c> and the Flush() method is called on the queue, accessing it afterward may result in exceptions due to it being disposed.
+    /// Defaults to <c>false</c>.
+    /// </param>
+    public ChronoQueueItem(T item, DateTimeOffset expiresAt, bool disposeOnExpiry = false, bool disposeOnFlush = false)
     {
         Item = item;
         ExpiresAt = expiresAt.ToUniversalTime();
         DisposeOnExpiry = disposeOnExpiry;
+        DisposeOnFlush = disposeOnFlush;
         
         var now = DateTime.UtcNow;
         if(ExpiresAt <= now)

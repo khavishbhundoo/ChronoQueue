@@ -96,6 +96,20 @@ public class ChronoQueueTests
         result.ShouldBeNull();
         Should.Throw<ObjectDisposedException>(() => q.Dispose());
     }
+    
+    [Fact]
+    public void Flush_With_DisposeOnFlush_Item_Dispose_Should_Be_Called()
+    {
+        var q = new AwesomeClass();
+        using var queue = new ChronoQueue<AwesomeClass>();
+        var item = new ChronoQueueItem<AwesomeClass>(q, DateTime.UtcNow.AddMilliseconds(1000), false, true);
+        
+        queue.Enqueue(item);
+        queue.Count().ShouldBe(1);
+        queue.Flush();
+        Should.Throw<ObjectDisposedException>(() => q.Dispose());
+
+    }
 }
 
 class AwesomeClass : IDisposable
