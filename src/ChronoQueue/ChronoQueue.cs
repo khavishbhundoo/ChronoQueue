@@ -100,10 +100,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         {
             foreach (var (id, item) in _items)
             {
-                if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
+                if (!item.IsExpired() || !_items.TryRemove(id, out _)) continue;
 
-                if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
-                    disposable.Dispose();
+                DisposeOnExpiry(item);
 
                 Interlocked.Decrement(ref _count);
             }
@@ -132,12 +131,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         if (Interlocked.CompareExchange(ref _isFlushing, 1, 0) != 0)
             return;
         
-        foreach (var (id, item) in _items)
+        foreach (var item in _items.Values)
         {
-            if (DisposeOnFlush(item)) continue;
-            
-            if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
-
+            DisposeOnFlush(item);
             DisposeOnExpiry(item);
         }
         _items.Clear();
@@ -169,26 +165,20 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
     internal static bool DisposeOnExpiry(ChronoQueueItem<T> item)
     {
-        if (item.DisposeOnExpiry)
+        if (item.DisposeOnExpiry && item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
         {
-            if (item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
-            {
-                disposableItem.Dispose();
-                return true;
-            }
+            disposableItem.Dispose();
+            return true;
         }
         return false;
     }
     
     internal static bool DisposeOnFlush(ChronoQueueItem<T> item)
     {
-        if (item.DisposeOnFlush)
+        if (item.DisposeOnFlush && item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
         {
-            if (item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
-            {
-                disposableItem.Dispose();
-                return true;
-            }
+            disposableItem.Dispose();
+            return true;
         }
         return false;
     }
