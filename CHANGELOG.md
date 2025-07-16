@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.2.0](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.8...0.2.0) (2025-07-16)
+
+
+### Features
+
+* Add disposeOnFlush ([#33](https://github.com/khavishbhundoo/ChronoQueue/issues/33)) ([f934375](https://github.com/khavishbhundoo/ChronoQueue/commit/f934375ff8fbca7569507d78f80bc5c3a1f30f83))
+
+
+### Bug fixes
+
+* Dispose expired items on flush and minor cleanup ([#31](https://github.com/khavishbhundoo/ChronoQueue/issues/31)) ([a216ce4](https://github.com/khavishbhundoo/ChronoQueue/commit/a216ce4c51804704eb88777fb3d425c1828d9996))
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#30](https://github.com/khavishbhundoo/ChronoQueue/issues/30)) ([d1eee18](https://github.com/khavishbhundoo/ChronoQueue/commit/d1eee185db888e7397bb5589893fdfbd5800e0b4))
+* Bump the nuget-dependencies group with 1 update ([#32](https://github.com/khavishbhundoo/ChronoQueue/issues/32)) ([c2d0edf](https://github.com/khavishbhundoo/ChronoQueue/commit/c2d0edf340afbdf5b84b4e7d6dd64581723dd6f6))
+
+
+### Documentation updates
+
+* Fix typo in README ([#29](https://github.com/khavishbhundoo/ChronoQueue/issues/29)) ([1408bf3](https://github.com/khavishbhundoo/ChronoQueue/commit/1408bf3245c74d6ec69145daeb5c9519aabf011a))
+* update benchmarks ([#27](https://github.com/khavishbhundoo/ChronoQueue/issues/27)) ([596b8f1](https://github.com/khavishbhundoo/ChronoQueue/commit/596b8f1cda487f508f6d1f813e6750c0c1227536))
+
 ## [0.1.8](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.7...0.1.8) (2025-06-12)
 
 
