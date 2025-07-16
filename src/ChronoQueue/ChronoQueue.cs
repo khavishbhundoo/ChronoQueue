@@ -167,7 +167,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         ObjectDisposedException.ThrowIf(IsDisposed, this);
     }
 
-    private static bool DisposeOnExpiry(ChronoQueueItem<T> item)
+    internal static bool DisposeOnExpiry(ChronoQueueItem<T> item)
     {
         if (item.DisposeOnExpiry)
         {
@@ -180,7 +180,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         return false;
     }
     
-    private static bool DisposeOnFlush(ChronoQueueItem<T> item)
+    internal static bool DisposeOnFlush(ChronoQueueItem<T> item)
     {
         if (item.DisposeOnFlush)
         {
