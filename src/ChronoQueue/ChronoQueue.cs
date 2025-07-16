@@ -84,14 +84,9 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         {
             if (!_items.TryRemove(id, out var chronoQueueItem))
                 continue;
-            Interlocked.Decrement(ref _count);
-
-            if (chronoQueueItem.IsExpired())
-            {
-                if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
-                    disposable.Dispose();
+            if (DisposeOnExpiry(chronoQueueItem)) 
                 continue;
-            }
+            Interlocked.Decrement(ref _count);
 
             item = chronoQueueItem.Item;
             return true;
@@ -139,19 +134,11 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         foreach (var (id, item) in _items)
         {
-            if (item.DisposeOnFlush)
-            {
-                if (item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
-                {
-                    disposableItem.Dispose();
-                    continue;
-                }
-            }
-                
+            if (DisposeOnFlush(item)) continue;
+            
             if (!item.IsExpired() || !_items.TryRemove(id, out var chronoQueueItem)) continue;
 
-            if (chronoQueueItem is { DisposeOnExpiry: true, Item: IDisposable disposable })
-                disposable.Dispose();
+            DisposeOnExpiry(item);
         }
         _items.Clear();
         _queue.Clear();
@@ -178,5 +165,31 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     private void ThrowIfDisposed()
     {
         ObjectDisposedException.ThrowIf(IsDisposed, this);
+    }
+
+    private static bool DisposeOnExpiry(ChronoQueueItem<T> item)
+    {
+        if (item.DisposeOnExpiry)
+        {
+            if (item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
+            {
+                disposableItem.Dispose();
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private static bool DisposeOnFlush(ChronoQueueItem<T> item)
+    {
+        if (item.DisposeOnFlush)
+        {
+            if (item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
+            {
+                disposableItem.Dispose();
+                return true;
+            }
+        }
+        return false;
     }
 }
