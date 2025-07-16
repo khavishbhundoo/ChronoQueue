@@ -95,6 +95,10 @@ public class ChronoQueueTests
         queue.Count().ShouldBe(0);
         result.ShouldBeNull();
         Should.Throw<ObjectDisposedException>(() => q.Dispose());
+        
+        var item2 = new ChronoQueueItem<AwesomeClass>(new AwesomeClass(), DateTime.UtcNow.AddMilliseconds(100), true);
+        await Task.Delay(200);
+        ChronoQueue<AwesomeClass>.DisposeOnExpiry(item2).ShouldBeTrue();
     }
     
     [Fact]
@@ -108,7 +112,9 @@ public class ChronoQueueTests
         queue.Count().ShouldBe(1);
         queue.Flush();
         Should.Throw<ObjectDisposedException>(() => q.Dispose());
-
+        
+        var item2 = new ChronoQueueItem<AwesomeClass>(new AwesomeClass(), DateTime.UtcNow.AddMilliseconds(1000), false, true);
+        ChronoQueue<AwesomeClass>.DisposeOnFlush(item2).ShouldBeTrue();
     }
 }
 
