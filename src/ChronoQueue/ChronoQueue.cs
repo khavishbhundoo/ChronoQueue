@@ -131,11 +131,15 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         if (Interlocked.CompareExchange(ref _isFlushing, 1, 0) != 0)
             return;
         
-        foreach (var item in _items.Values)
+        foreach (var kvp in _items)
         {
-            DisposeOnFlush(item);
-            DisposeOnExpiry(item);
+            var item = kvp.Value;
+            if (!DisposeOnExpiry(item))
+            {
+                DisposeOnFlush(item);
+            }
         }
+        
         _items.Clear();
         _queue.Clear();
         Interlocked.Exchange(ref _count, 0);
@@ -163,6 +167,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         ObjectDisposedException.ThrowIf(IsDisposed, this);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool DisposeOnExpiry(ChronoQueueItem<T> item)
     {
         if (item.DisposeOnExpiry && item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
@@ -173,6 +178,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         return false;
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool DisposeOnFlush(ChronoQueueItem<T> item)
     {
         if (item.DisposeOnFlush && item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
