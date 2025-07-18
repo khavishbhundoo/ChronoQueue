@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.1](https://github.com/khavishbhundoo/ChronoQueue/compare/0.2.0...0.2.1) (2025-07-18)
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#38](https://github.com/khavishbhundoo/ChronoQueue/issues/38)) ([2ba8a6e](https://github.com/khavishbhundoo/ChronoQueue/commit/2ba8a6eba690004f10d125cc6066b57a1791dc8c))
+
+
+### Refactoring
+
+* extract methods and final flush cleanup ([#36](https://github.com/khavishbhundoo/ChronoQueue/issues/36)) ([73a7079](https://github.com/khavishbhundoo/ChronoQueue/commit/73a7079fe85d32cbc86e1adab731fb1e4d59b7a2))
+* minor cleanup ([#34](https://github.com/khavishbhundoo/ChronoQueue/issues/34)) ([52989ad](https://github.com/khavishbhundoo/ChronoQueue/commit/52989ad7474009294c781d919a133cbec89fba6a))
+
+
+### Performance Improvements
+
+* reduce memory allocation in flush ([#37](https://github.com/khavishbhundoo/ChronoQueue/issues/37)) ([2c497f3](https://github.com/khavishbhundoo/ChronoQueue/commit/2c497f3ec8ca54a3af21a4efd0a23059440a07c6))
+
 ## [0.2.0](https://github.com/khavishbhundoo/ChronoQueue/compare/0.1.8...0.2.0) (2025-07-16)
 
 
