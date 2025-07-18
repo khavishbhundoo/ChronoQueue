@@ -134,8 +134,10 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         foreach (var kvp in _items)
         {
             var item = kvp.Value;
-            DisposeOnFlush(item);
-            DisposeOnExpiry(item);
+            if (!DisposeOnExpiry(item))
+            {
+                DisposeOnFlush(item);
+            }
         }
         
         _items.Clear();
