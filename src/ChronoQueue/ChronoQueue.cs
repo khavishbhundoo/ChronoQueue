@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,10 +19,10 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     private readonly ConcurrentDictionary<long, ChronoQueueItem<T>> _items = new();
     private readonly PeriodicTimer _cleanupTimer = new(TimeSpan.FromMilliseconds(100));
     private readonly CancellationTokenSource _cts = new();
-    private long _count;
-    private long _idCounter;
     private volatile bool _isDisposed;
-    private int _isFlushing;
+    private PaddedLong  _count;
+    private PaddedLong _idCounter;
+    private PaddedInt  _isFlushing;
 
     private bool IsDisposed => _isDisposed;
 
@@ -50,10 +51,10 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         if (item.IsExpired())
             throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
 
-        var id = Interlocked.Increment(ref _idCounter);
+        var id = Interlocked.Increment(ref _idCounter.Value);
         _queue.Enqueue(id);
         _items.TryAdd(id, item);
-        Interlocked.Increment(ref _count);
+        Interlocked.Increment(ref _count.Value);
     }
 
     /// <summary>
@@ -86,7 +87,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
                 continue;
             if (DisposeOnExpiry(chronoQueueItem)) 
                 continue;
-            Interlocked.Decrement(ref _count);
+            Interlocked.Decrement(ref _count.Value);
 
             item = chronoQueueItem.Item;
             return true;
@@ -104,7 +105,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
 
                 DisposeOnExpiry(item);
 
-                Interlocked.Decrement(ref _count);
+                Interlocked.Decrement(ref _count.Value);
             }
         }
     }
@@ -116,7 +117,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     /// Time Complexity: <b>O(1)</b>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public long Count() => Interlocked.Read(ref _count);
+    public long Count() => Interlocked.Read(ref _count.Value);
 
     /// <summary>
     /// Atomically flushes the queue, ensuring only one thread performs the operation at a time.
@@ -128,7 +129,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     public void Flush()
     {
         // Atomically set _isFlushing to 1 if it was 0; otherwise exit.Only one flush at a time
-        if (Interlocked.CompareExchange(ref _isFlushing, 1, 0) != 0)
+        if (Interlocked.CompareExchange(ref _isFlushing.Value, 1, 0) != 0)
             return;
         
         foreach (var kvp in _items)
@@ -142,8 +143,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         
         _items.Clear();
         _queue.Clear();
-        Interlocked.Exchange(ref _count, 0);
-        Interlocked.Exchange(ref _isFlushing, 0);
+        Interlocked.Exchange(ref _count.Value, 0);
+        Interlocked.Exchange(ref _isFlushing.Value, 0);
 
     }
     
@@ -188,4 +189,16 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
         }
         return false;
     }
+}
+
+[StructLayout(LayoutKind.Explicit, Size = 64)]
+internal struct PaddedLong
+{
+    [FieldOffset(0)] public long Value;
+}
+    
+[StructLayout(LayoutKind.Explicit, Size = 64)]
+internal struct PaddedInt
+{
+    [FieldOffset(0)] public int Value;
 }
