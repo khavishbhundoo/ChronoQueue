@@ -52,8 +52,8 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
             throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
 
         var id = Interlocked.Increment(ref _idCounter.Value);
-        _queue.Enqueue(id);
         _items.TryAdd(id, item);
+        _queue.Enqueue(id);
         Interlocked.Increment(ref _count.Value);
     }
 
@@ -171,7 +171,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool DisposeOnExpiry(ChronoQueueItem<T> item)
     {
-        if (item.DisposeOnExpiry && item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
+        if (item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
         {
             disposableItem.Dispose();
             return true;
@@ -182,7 +182,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool DisposeOnFlush(ChronoQueueItem<T> item)
     {
-        if (item.DisposeOnFlush && item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
+        if (item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
         {
             disposableItem.Dispose();
             return true;
