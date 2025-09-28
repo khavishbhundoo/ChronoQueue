@@ -169,9 +169,9 @@ public class ChronoQueueTests
             await Task.WhenAll(Task.WhenAll(producers), consumer);
 
             // Assert: no items were lost
-            Assert.Equal(totalItems, produced.Count);
-            Assert.Equal(totalItems, consumed.Count);
-            Assert.Empty(produced.Except(consumed));
+            produced.Count.ShouldBe(totalItems, $"Iteration {iteration}: All produced items should be counted");
+            consumed.Count.ShouldBe(totalItems, $"Iteration {iteration}: All consumed items should be counted");
+            produced.Except(consumed).ShouldBeEmpty($"Iteration {iteration}: No items should be lost in the queue");
         }
     }
 }
