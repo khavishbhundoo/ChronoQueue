@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/khavishbhundoo/ChronoQueue/compare/0.2.2...0.2.3) (2025-09-28)
+
+
+### Bug fixes
+
+* enqueue race condition and simplify dispose checks ([#46](https://github.com/khavishbhundoo/ChronoQueue/issues/46)) ([95470fc](https://github.com/khavishbhundoo/ChronoQueue/commit/95470fcd8248c67f596b26065898f4592eb0af9f))
+
 ## [0.2.2](https://github.com/khavishbhundoo/ChronoQueue/compare/0.2.1...0.2.2) (2025-09-27)
 
 
