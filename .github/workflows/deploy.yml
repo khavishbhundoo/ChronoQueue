@@ -26,6 +26,7 @@ jobs:
           dotnet-version: |
             8.x.x
             9.x.x
+            10.x.x
           
       - name: Build & Test
         run: |
@@ -37,7 +38,7 @@ jobs:
         run: dotnet pack --configuration Release --no-build -o ./nupkg /p:Version=${{ github.ref_name }}
           
       - name: Upload NuGet artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: nuget-packages
           path: ./nupkg/*
