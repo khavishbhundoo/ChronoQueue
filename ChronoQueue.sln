@@ -1,10 +1,10 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChronoQueue", "src\ChronoQueue\ChronoQueue.csproj", "{D7DE455A-18A7-4DE8-A328-F6F192A2314D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChronoQueue", "src\ChronoQueue\ChronoQueue.csproj", "{D7DE455A-18A7-4DE8-A328-F6F192A2314D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChronoQueueUnitTests", "test\ChronoQueueUnitTests\ChronoQueueUnitTests.csproj", "{718D7388-E5EA-46D1-8481-ED3C2DFD3A35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChronoQueueBenchmarks", "src\ChronoQueueBenchmarks\ChronoQueueBenchmarks.csproj", "{392DF611-A71E-4A6E-8EF8-F58A35D37B58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChronoQueueBenchmarks", "src\ChronoQueueBenchmarks\ChronoQueueBenchmarks.csproj", "{392DF611-A71E-4A6E-8EF8-F58A35D37B58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
