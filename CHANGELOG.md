@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://github.com/khavishbhundoo/ChronoQueue/compare/0.2.3...0.3.0) (2025-11-15)
+
+
+### Features
+
+* Add support for .NET 10 ([#57](https://github.com/khavishbhundoo/ChronoQueue/issues/57)) ([3347f66](https://github.com/khavishbhundoo/ChronoQueue/commit/3347f6677389501d699a898b7ac7fa17aec23179))
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#48](https://github.com/khavishbhundoo/ChronoQueue/issues/48)) ([9587e42](https://github.com/khavishbhundoo/ChronoQueue/commit/9587e42907dbc07aef63ef9cc694580d87ab0f81))
+* **deps:** Bump actions/upload-artifact from 4 to 5 ([#52](https://github.com/khavishbhundoo/ChronoQueue/issues/52)) ([bdf4d2f](https://github.com/khavishbhundoo/ChronoQueue/commit/bdf4d2f4d051e68fbc31c325d8da381c3e3b7881))
+* **deps:** Bump highbyte/sonarscan-dotnet from 2.4.2 to 2.4.3 ([#49](https://github.com/khavishbhundoo/ChronoQueue/issues/49)) ([b6a13be](https://github.com/khavishbhundoo/ChronoQueue/commit/b6a13beaf2ac813e02dbf777ad8b1dfc8f7770fa))
+
 ## [0.2.3](https://github.com/khavishbhundoo/ChronoQueue/compare/0.2.2...0.2.3) (2025-09-28)
 
 
