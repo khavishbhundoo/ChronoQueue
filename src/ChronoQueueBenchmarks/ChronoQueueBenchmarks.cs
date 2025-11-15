@@ -9,6 +9,7 @@ namespace ChronoQueueBenchmarks;
 [MemoryDiagnoser]
 [SimpleJob(RuntimeMoniker.Net80)]
 [SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 [CategoriesColumn]
 [DisplayName("ChronoQueueBenchmarks")]
