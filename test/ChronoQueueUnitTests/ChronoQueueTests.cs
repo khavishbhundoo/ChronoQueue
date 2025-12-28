@@ -12,8 +12,8 @@ public class ChronoQueueTests
         using var queue = new ChronoQueue<string>();
         var expiryTime = DateTime.UtcNow.AddSeconds(1);
         var item = new ChronoQueueItem<string>("test1", expiryTime);
-
-
+        
+        item.GetUtcExpiryTime().ShouldBe(expiryTime);
         queue.Enqueue(item);
         queue.Count().ShouldBe(1);
 
