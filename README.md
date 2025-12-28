@@ -38,12 +38,12 @@ Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a Con
 
 
 
-| Property          | Description                                                                                                   |
-|-------------------|---------------------------------------------------------------------------------------------------------------|
-| `Item`            | Adds an item of type T to the queue                                                                           |
-| `ExpiresAt`       | Absolute time at which item T should expire in as a DateTimeOffset                                            |
-| `DisposeOnExpiry` | Auto-dispose expired IDisposable items if true otherwise false by default                                     |
-| `DisposeOnFlush`  | Auto-dispose IDisposable items if true when Flush operation is called on the queue otherwise false by default |
+| Property              | Description                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| `Item`                | Adds an item of type T to the queue                                                                           |
+| `GetUtcExpiryTime()`  | Absolute time at which item T should expire in as a DateTimeOffset                                            |
+| `DisposeOnExpiry`     | Auto-dispose expired IDisposable items if true otherwise false by default                                     |
+| `DisposeOnFlush`      | Auto-dispose IDisposable items if true when Flush operation is called on the queue otherwise false by default |
 
 
 Examples of usage for methods above can be found in this README and in unit tests

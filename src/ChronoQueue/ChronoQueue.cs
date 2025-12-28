@@ -169,7 +169,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static bool DisposeOnExpiry(ChronoQueueItem<T> item)
+    internal static bool DisposeOnExpiry(in ChronoQueueItem<T> item)
     {
         if (item.IsExpired() && item is { DisposeOnExpiry: true, Item: IDisposable disposableItem })
         {
@@ -180,7 +180,7 @@ public sealed class ChronoQueue<T> : IChronoQueue<T>, IDisposable
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static bool DisposeOnFlush(ChronoQueueItem<T> item)
+    internal static bool DisposeOnFlush(in ChronoQueueItem<T> item)
     {
         if (item is { DisposeOnFlush: true, Item: IDisposable disposableItem })
         {

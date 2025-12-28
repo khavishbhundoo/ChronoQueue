@@ -17,12 +17,6 @@ public readonly struct ChronoQueueItem<T>
     public T Item { get; }
     
     /// <summary>
-    /// Gets the absolute expiration time of the item in UTC.
-    /// Internally normalized using <see cref="DateTimeOffset.ToUniversalTime"/> to ensure consistent comparisons against <see cref="DateTimeOffset.UtcNow"/>.
-    /// </summary>
-    public DateTimeOffset ExpiresAt { get; }
-    
-    /// <summary>
     /// Indicates whether the item should be automatically disposed when it expires and is removed from the queue.
     /// This applies only if <typeparamref name="T"/> is a reference type that implements <see cref="IDisposable"/>.
     /// When set to <c>true</c>, attempting to use the item after expiration may result in exceptions due to the object being disposed.
@@ -61,24 +55,38 @@ public readonly struct ChronoQueueItem<T>
     public ChronoQueueItem(T item, DateTimeOffset expiresAt, bool disposeOnExpiry = false, bool disposeOnFlush = false)
     {
         Item = item;
-        ExpiresAt = expiresAt.ToUniversalTime();
         DisposeOnExpiry = disposeOnExpiry;
         DisposeOnFlush = disposeOnFlush;
         
-        var now = DateTime.UtcNow;
-        if(ExpiresAt <= now)
+        var expiryAtUtc = expiresAt.ToUniversalTime();
+        var now = DateTimeOffset.UtcNow;
+        
+        if(expiryAtUtc <= now)
             throw new ChronoQueueItemExpiredException("The item has already expired and cannot be enqueued.");
         
-        var duration = ExpiresAt - now;
-        var nowTicks = Environment.TickCount64;
-        ExpiryDeadlineTicks = nowTicks + (long)duration.TotalMilliseconds;
+        ExpiryTicksUtc = expiryAtUtc.UtcDateTime.Ticks;
+        
+        var durationMs = (ExpiryTicksUtc - now.UtcDateTime.Ticks) / TimeSpan.TicksPerMillisecond;
+        ExpiryDeadlineMs = Environment.TickCount64 + durationMs;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsExpired() => Environment.TickCount64 >= ExpiryDeadlineTicks;
+    public bool IsExpired() => Environment.TickCount64 >= ExpiryDeadlineMs;
     
     /// <summary>
-    /// Tick count (based on Environment.TickCount64) at which this item expires.
+    /// Gets the absolute expiration time of the item in UTC.
+    /// Internally normalized using <see cref="DateTimeOffset.ToUniversalTime"/> to ensure consistent comparisons against <see cref="DateTimeOffset.UtcNow"/>.
     /// </summary>
-    internal long ExpiryDeadlineTicks { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DateTimeOffset GetUtcExpiryTime() => new DateTimeOffset(new DateTime(ExpiryTicksUtc, DateTimeKind.Utc));
+    
+    /// <summary>
+    /// Expiry time in milliseconds (based on Environment.TickCount64) at which this item expires.
+    /// </summary>
+    internal long ExpiryDeadlineMs { get; }
+    
+    /// <summary>
+    /// Absolute expiry time in ticks
+    /// </summary>
+    internal long ExpiryTicksUtc { get; }
 }
