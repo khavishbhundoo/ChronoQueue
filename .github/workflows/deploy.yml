@@ -35,7 +35,7 @@ jobs:
           dotnet test  --configuration Release --collect:"XPlat Code Coverage"
           
       - name: Pack NuGet package
-        run: dotnet pack --configuration Release --no-build -o ./nupkg 
+        run: dotnet pack --configuration Release --no-build -o ./nupkg /p:Version=${{ github.ref_name }}
           
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v6
