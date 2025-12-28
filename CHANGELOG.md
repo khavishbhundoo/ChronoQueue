@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.1...0.3.2) (2025-12-28)
+
+
+### Build
+
+* pass the Version  in pack step ([#63](https://github.com/khavishbhundoo/ChronoQueue/issues/63)) ([06e90a9](https://github.com/khavishbhundoo/ChronoQueue/commit/06e90a912b3600bee08f8907019f872169dccd27))
+
 ## [0.3.1](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.0...0.3.1) (2025-12-28)
 
 
