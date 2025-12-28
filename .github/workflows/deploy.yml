@@ -31,11 +31,11 @@ jobs:
       - name: Build & Test
         run: |
           dotnet restore
-          dotnet build --configuration Release --no-restore
+          dotnet build --configuration Release /p:Version=${{ github.ref_name }} --no-restore
           dotnet test  --configuration Release --collect:"XPlat Code Coverage"
           
       - name: Pack NuGet package
-        run: dotnet pack --configuration Release --no-build -o ./nupkg /p:Version=${{ github.ref_name }}
+        run: dotnet pack --configuration Release --no-build -o ./nupkg 
           
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v6
