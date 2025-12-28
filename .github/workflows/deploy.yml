@@ -32,7 +32,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release /p:Version=${{ github.ref_name }}  /p:FileVersion=${{ github.ref_name }} --no-restore
-          dotnet test  --configuration Release --collect:"XPlat Code Coverage"
+          dotnet test  --configuration Release --no-build --collect:"XPlat Code Coverage"
           
       - name: Pack NuGet package
         run: dotnet pack --configuration Release --no-build -o ./nupkg /p:Version=${{ github.ref_name }} 
