@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.3...0.3.4) (2025-12-28)
+
+
+### Build
+
+* no-build while running test during deploy ([#67](https://github.com/khavishbhundoo/ChronoQueue/issues/67)) ([2c67f10](https://github.com/khavishbhundoo/ChronoQueue/commit/2c67f107ef8713abd4745407bfeb1de084e3c6ac))
+
 ## [0.3.3](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.2...0.3.3) (2025-12-28)
 
 
