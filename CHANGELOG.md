@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.1](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.0...0.3.1) (2025-12-28)
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#59](https://github.com/khavishbhundoo/ChronoQueue/issues/59)) ([660a7d3](https://github.com/khavishbhundoo/ChronoQueue/commit/660a7d3abd206e7b9bce1eb7b2a7595260ca1a9b))
+* **deps:** Bump actions/checkout from 5 to 6 ([#58](https://github.com/khavishbhundoo/ChronoQueue/issues/58)) ([a6043d1](https://github.com/khavishbhundoo/ChronoQueue/commit/a6043d1393e3d61d945facc6049f878b4f20da3c))
+* **deps:** Bump actions/upload-artifact from 5 to 6 ([#60](https://github.com/khavishbhundoo/ChronoQueue/issues/60)) ([298aec6](https://github.com/khavishbhundoo/ChronoQueue/commit/298aec69a3f9adfe4137e24073f22af999a809bf))
+* pass the Version in the assembly ([#62](https://github.com/khavishbhundoo/ChronoQueue/issues/62)) ([5b8ca51](https://github.com/khavishbhundoo/ChronoQueue/commit/5b8ca51f945eda002ec1b5935eea52a77db260f4))
+
 ## [0.3.0](https://github.com/khavishbhundoo/ChronoQueue/compare/0.2.3...0.3.0) (2025-11-15)
 
 
