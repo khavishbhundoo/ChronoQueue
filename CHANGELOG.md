@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.2...0.3.3) (2025-12-28)
+
+
+### Build
+
+* Specify FileVersion in assembly ([#65](https://github.com/khavishbhundoo/ChronoQueue/issues/65)) ([4c6e4df](https://github.com/khavishbhundoo/ChronoQueue/commit/4c6e4dfd3ac8cfb39094642557b75546342cb8d5))
+
 ## [0.3.2](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.1...0.3.2) (2025-12-28)
 
 
