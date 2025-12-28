@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.5](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.4...0.3.5) (2025-12-28)
+
+
+### Performance Improvements
+
+* reduce size of ChronoQueueItem struct and introduce GetUtcExpiryTime() method ([#69](https://github.com/khavishbhundoo/ChronoQueue/issues/69)) ([65a2be9](https://github.com/khavishbhundoo/ChronoQueue/commit/65a2be9d1892d1878d21758e0af300a66adc532a))
+
 ## [0.3.4](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.3...0.3.4) (2025-12-28)
 
 
