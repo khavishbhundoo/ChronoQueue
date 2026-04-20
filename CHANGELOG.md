@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.6](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.5...0.3.6) (2026-04-20)
+
+
+### Build
+
+* Bump coverlet.collector from 6.0.4 to 10.0.0 ([#77](https://github.com/khavishbhundoo/ChronoQueue/issues/77)) ([547256b](https://github.com/khavishbhundoo/ChronoQueue/commit/547256b01ed86e7e7a5cf2450b0a57ed369f15a2))
+* Bump coverlet.msbuild from 6.0.4 to 8.0.1 ([#74](https://github.com/khavishbhundoo/ChronoQueue/issues/74)) ([8b8ec38](https://github.com/khavishbhundoo/ChronoQueue/commit/8b8ec3876751c2da8037e992c3b30b04a3dd1fd5))
+* Bump coverlet.msbuild from 8.0.1 to 10.0.0 ([#78](https://github.com/khavishbhundoo/ChronoQueue/issues/78)) ([88df581](https://github.com/khavishbhundoo/ChronoQueue/commit/88df58160377b87bd593b24fae0594fce1e5a1e0))
+* Bump the nuget-dependencies group with 1 update ([#75](https://github.com/khavishbhundoo/ChronoQueue/issues/75)) ([ca512d9](https://github.com/khavishbhundoo/ChronoQueue/commit/ca512d9f87cee9639fc5990c5c8f2b723919fc66))
+* **deps:** Bump actions/upload-artifact from 6 to 7 ([#72](https://github.com/khavishbhundoo/ChronoQueue/issues/72)) ([51d14d8](https://github.com/khavishbhundoo/ChronoQueue/commit/51d14d847f22538e0ee165663dfcbe304fc5a117))
+
 ## [0.3.5](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.4...0.3.5) (2025-12-28)
 
 
