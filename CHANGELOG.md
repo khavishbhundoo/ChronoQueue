@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.7](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.6...0.3.7) (2026-07-16)
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#86](https://github.com/khavishbhundoo/ChronoQueue/issues/86)) ([b740ffd](https://github.com/khavishbhundoo/ChronoQueue/commit/b740ffdb343d81126ed01dbda3cd4b5962d76bc9))
+* **deps:** Bump actions/setup-dotnet from 5 to 6 ([#87](https://github.com/khavishbhundoo/ChronoQueue/issues/87)) ([35b0734](https://github.com/khavishbhundoo/ChronoQueue/commit/35b0734232d7e8e90c814507813e4af46860bdbb))
+* **deps:** Bump highbyte/sonarscan-dotnet from 2.5.0 to 2.5.1 ([#85](https://github.com/khavishbhundoo/ChronoQueue/issues/85)) ([48206ae](https://github.com/khavishbhundoo/ChronoQueue/commit/48206aeafd00db26a93225a4fa50b74e5c08a92e))
+
 ## [0.3.6](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.5...0.3.6) (2026-06-28)
 
 
