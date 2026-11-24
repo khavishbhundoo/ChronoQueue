@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.7](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.6...0.3.7) (2026-11-24)
+
+
+### Build
+
+* Bump the nuget-dependencies group with 1 update ([#86](https://github.com/khavishbhundoo/ChronoQueue/issues/86)) ([b740ffd](https://github.com/khavishbhundoo/ChronoQueue/commit/b740ffdb343d81126ed01dbda3cd4b5962d76bc9))
+* Bump the nuget-dependencies group with 3 updates ([#98](https://github.com/khavishbhundoo/ChronoQueue/issues/98)) ([3b623be](https://github.com/khavishbhundoo/ChronoQueue/commit/3b623be955047809255514eeb752ca9768e1894f))
+* Bump xunit.runner.visualstudio from 3.1.5 to 4.0.1 ([#95](https://github.com/khavishbhundoo/ChronoQueue/issues/95)) ([0cf7285](https://github.com/khavishbhundoo/ChronoQueue/commit/0cf728551fb1233f5a0794a38cdb280682a8c7d9))
+* **deps:** Bump actions/setup-dotnet from 5 to 6 ([#87](https://github.com/khavishbhundoo/ChronoQueue/issues/87)) ([35b0734](https://github.com/khavishbhundoo/ChronoQueue/commit/35b0734232d7e8e90c814507813e4af46860bdbb))
+* **deps:** Bump highbyte/sonarscan-dotnet from 2.5.0 to 2.5.1 ([#85](https://github.com/khavishbhundoo/ChronoQueue/issues/85)) ([48206ae](https://github.com/khavishbhundoo/ChronoQueue/commit/48206aeafd00db26a93225a4fa50b74e5c08a92e))
+* **deps:** Bump highbyte/sonarscan-dotnet from 2.5.1 to 2.6.0 ([#99](https://github.com/khavishbhundoo/ChronoQueue/issues/99)) ([33c2c95](https://github.com/khavishbhundoo/ChronoQueue/commit/33c2c952eff59523fa312965ec75d7694ea9dde6))
+
+
+### Performance Improvements
+
+* redesign storage around single-node FIFO and time-bucketed cleanup ([#100](https://github.com/khavishbhundoo/ChronoQueue/issues/100)) ([25b3326](https://github.com/khavishbhundoo/ChronoQueue/commit/25b3326eb8b04d56ba20b70253ff5ede8ca674d3))
+
 ## [0.3.6](https://github.com/khavishbhundoo/ChronoQueue/compare/0.3.5...0.3.6) (2026-06-28)
 
 
