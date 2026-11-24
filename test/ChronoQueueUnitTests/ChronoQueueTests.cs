@@ -121,6 +121,115 @@ public class ChronoQueueTests
         ChronoQueue<AwesomeClass>.DisposeOnFlush(item2).ShouldBeTrue();
     }
 
+    [Fact]
+    public async Task TryDequeue_Should_Not_Return_Expired_Item_Before_Cleanup_Runs()
+    {
+        // No background cleanup, so only TryDequeue can see the expired item.
+        using var queue = new ChronoQueue<string>(runBackgroundCleanup: false);
+        var item = new ChronoQueueItem<string>("stale", DateTime.UtcNow.AddMilliseconds(50));
+        queue.Enqueue(item);
+        queue.Enqueue(new ChronoQueueItem<string>("fresh", DateTime.UtcNow.AddSeconds(10)));
+        await SpinUntilExpired(item);
+
+        queue.TryDequeue(out var result).ShouldBeTrue();
+        result.ShouldBe("fresh");
+        queue.Count().ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task TryDequeue_Skipping_Expired_DisposeOnExpiry_Item_Should_Decrement_Count()
+    {
+        using var queue = new ChronoQueue<AwesomeClass>(runBackgroundCleanup: false);
+        var payload = new AwesomeClass();
+        var item = new ChronoQueueItem<AwesomeClass>(payload, DateTime.UtcNow.AddMilliseconds(50), true);
+        queue.Enqueue(item);
+        await SpinUntilExpired(item);
+
+        queue.TryDequeue(out var result).ShouldBeFalse();
+        result.ShouldBeNull();
+        queue.Count().ShouldBe(0);
+        Should.Throw<ObjectDisposedException>(() => payload.Dispose());
+    }
+
+    [Fact]
+    public async Task Expired_Items_Should_Be_Removed_Without_Dequeue()
+    {
+        using var queue = new ChronoQueue<string>();
+        for (var i = 0; i < 1_000; i++)
+            queue.Enqueue(new ChronoQueueItem<string>("short", DateTime.UtcNow.AddMilliseconds(100 + i % 300)));
+        queue.Enqueue(new ChronoQueueItem<string>("long", DateTime.UtcNow.AddSeconds(30)));
+        queue.Count().ShouldBe(1_001);
+
+        await WaitFor(() => queue.Count() == 1, TimeSpan.FromSeconds(3));
+
+        queue.Count().ShouldBe(1);
+        queue.TryDequeue(out var result).ShouldBeTrue();
+        result.ShouldBe("long");
+    }
+
+    [Fact]
+    public async Task Each_Expired_Item_Should_Be_Disposed_Exactly_Once_Under_Concurrency()
+    {
+        using var queue = new ChronoQueue<CountingDisposable>();
+        var payloads = new ConcurrentBag<CountingDisposable>();
+        var producers = Enumerable.Range(0, 4).Select(_ => Task.Run(() =>
+        {
+            for (var i = 0; i < 5_000; i++)
+            {
+                var payload = new CountingDisposable();
+                payloads.Add(payload);
+                queue.Enqueue(new ChronoQueueItem<CountingDisposable>(payload,
+                    DateTime.UtcNow.AddMilliseconds(Random.Shared.Next(50, 400)), true));
+            }
+        })).ToArray();
+        var dequeued = 0;
+        var consumer = Task.Run(async () =>
+        {
+            while (!producers.All(p => p.IsCompleted) || queue.Count() > 0)
+            {
+                if (queue.TryDequeue(out _)) Interlocked.Increment(ref dequeued);
+                else await Task.Delay(1);
+            }
+        });
+
+        await Task.WhenAll(producers);
+        await consumer;
+
+        queue.Count().ShouldBe(0);
+        payloads.Count(p => p.DisposeCount > 1).ShouldBe(0);
+        // Everything not handed out expired, and was disposed once.
+        payloads.Count(p => p.DisposeCount == 1).ShouldBe(payloads.Count - dequeued);
+    }
+
+    [Fact]
+    public void Flush_Should_Keep_Accepting_Items()
+    {
+        using var queue = new ChronoQueue<string>();
+        for (var i = 0; i < 100; i++)
+            queue.Enqueue(new ChronoQueueItem<string>("a", DateTime.UtcNow.AddSeconds(10)));
+        queue.Flush();
+        queue.Count().ShouldBe(0);
+        queue.TryDequeue(out _).ShouldBeFalse();
+
+        queue.Enqueue(new ChronoQueueItem<string>("b", DateTime.UtcNow.AddSeconds(10)));
+        queue.Count().ShouldBe(1);
+        queue.TryDequeue(out var result).ShouldBeTrue();
+        result.ShouldBe("b");
+    }
+
+    private static async Task SpinUntilExpired<T>(ChronoQueueItem<T> item)
+    {
+        while (!item.IsExpired())
+            await Task.Delay(5);
+    }
+
+    private static async Task WaitFor(Func<bool> condition, TimeSpan timeout)
+    {
+        var deadline = DateTime.UtcNow + timeout;
+        while (!condition() && DateTime.UtcNow < deadline)
+            await Task.Delay(10);
+    }
+
     [Theory]
     [InlineData(4, 50_000, 5)] // 4 producers, 50k items each, 5 iterations
     [InlineData(2, 100_000, 3)] // 2 producers, 100k items each, 3 iterations
@@ -176,6 +285,13 @@ public class ChronoQueueTests
     }
 }
 
+
+class CountingDisposable : IDisposable
+{
+    private int _disposeCount;
+    public int DisposeCount => Volatile.Read(ref _disposeCount);
+    public void Dispose() => Interlocked.Increment(ref _disposeCount);
+}
 
 class AwesomeClass : IDisposable
 {

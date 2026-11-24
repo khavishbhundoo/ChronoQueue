@@ -29,5 +29,5 @@ var config = ManualConfig.Create(DefaultConfig.Instance)
     .AddExporter(JsonExporter.Default)
     .AddExporter(MarkdownExporter.GitHub); // Export as GitHub markdown
 
-BenchmarkRunner.Run(typeof(Program).Assembly, config);
+BenchmarkRunner.Run(typeof(Program).Assembly, config, args);
 

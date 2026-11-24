@@ -7,7 +7,7 @@
 
 # ChronoQueue
 ChronoQueue is a thread-safe, time-aware FIFO queue with automatic item expiration. It is designed for scenarios where you need time-based eviction of in-memory data, such as TTL-based task buffering, lightweight scheduling, or caching with strict ordering.
-Internally, it combines a ConcurrentQueue for preserving FIFO ordering and a ConcurrentDictionary + PeriodicTimer for managing expiration and cleanup of stale items.
+Internally, each item is stored once in a ConcurrentQueue that preserves FIFO ordering. A PeriodicTimer-driven cleanup files items into 100 ms time buckets by expiry, so each pass only touches items that are new or due rather than scanning the whole queue.
 
 ## 🚀 Features
 
