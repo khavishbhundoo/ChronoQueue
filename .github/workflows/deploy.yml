@@ -9,7 +9,8 @@ env:
   DOTNET_INSTALL_DIR: "./.dotnet"
   
 permissions:
-  pull-requests: write
+  contents: read
+  id-token: write # required for NuGet trusted publishing (OIDC)
 
 jobs:
   build:
@@ -43,10 +44,16 @@ jobs:
           name: nuget-packages
           path: ./nupkg/*
 
+      - name: NuGet login (OIDC)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }} 
+
       - name: Push .nupkg to NuGet.org
-        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
 
       - name: Push .snupkg to NuGet.org
-        run: dotnet nuget push ./nupkg/*.snupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate || true
+        run: dotnet nuget push ./nupkg/*.snupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate || true
           
     
